@@ -7,8 +7,22 @@ Remake for original Sharedview proyect made back in 2020
 - Windows/Linux 
 - FFmpg (https://www.ffmpeg.org/)
 
+## Basic Usage
+
+- First start the signaling server with
+``` bash
+ cd ./Signaling Server
+ npm run dev
+```
+- Then start the web site with
+``` bash
+ cd ./NextJS Proyect 
+ npm run dev
+```
+
+
 ### Contains
-- RMTP Server 
+- RMTP Server (Site in construction)
 - NextJS WebSite 
 - WebSocket Server for signaling between peers
 - (Comming soon) API Server
