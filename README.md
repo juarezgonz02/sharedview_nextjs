@@ -11,14 +11,14 @@ Remake for original Sharedview proyect made back in 2020
 
 - First start the signaling server with
 ``` bash
- npm i
  cd ./"Signaling Server"
+ npm i
  npm run dev
 ```
 - Then start the web site with
 ``` bash
+ cd ./"NextJS Proyect"
  npm i
- cd ./"NextJS Proyect" 
  npm run dev
 ```
 - Finaly is site is avainable in http://localhost:3000/[room] 
