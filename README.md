@@ -11,12 +11,12 @@ Remake for original Sharedview proyect made back in 2020
 
 - First start the signaling server with
 ``` bash
- cd ./Signaling Server
+ cd ./"Signaling Server"
  npm run dev
 ```
 - Then start the web site with
 ``` bash
- cd ./NextJS Proyect 
+ cd ./"NextJS Proyect" 
  npm run dev
 ```
 
