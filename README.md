@@ -8,6 +8,16 @@ Remake for original Sharedview proyect made back in 2020
 - FFmpg (https://www.ffmpeg.org/)
 
 ## Basic Usage
+- Fork release branch to dev 
+- Create env file .env.local on root
+```
+ NEXT_PUBLIC_PROTOCOL=http
+ NEXT_PUBLIC_HOST=localhost
+ KEY=nodemediahls
+ NEXT_PUBLIC_HLS_PORT=8000
+ NEXT_PUBLIC_API_PORT=80
+ NEXT_PUBLIC_WEB_PORT=3000
+```
 
 - First start the signaling server with
 ``` bash
