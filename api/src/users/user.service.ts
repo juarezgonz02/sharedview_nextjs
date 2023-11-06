@@ -21,8 +21,6 @@ export class UserService{
 
         createdUser.salt = await createdUser.genSalt;
         createdUser.hash = registerUserDto.password;
-        // TODO: REMOVE OR COMMENT THIS LOG
-        this.logger.debug(createdUser);
         createdUser.save();
         this.logger.debug(`User created with id: ${createdUser._id}`);
     }
