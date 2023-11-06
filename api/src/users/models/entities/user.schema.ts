@@ -16,6 +16,9 @@ export class User{
     password: string;
     @Prop()
     salt: string;
+    genSalt;
+    hash;
+    compare;
 }
 
 const UserSchema = SchemaFactory.createForClass(User)

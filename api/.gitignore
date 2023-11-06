@@ -1,4 +1,4 @@
-#project shit
+# project shit
 .development.env
 .dockerignore
 .docker-compose.yml
