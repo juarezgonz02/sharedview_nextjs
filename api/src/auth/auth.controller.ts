@@ -12,6 +12,7 @@ export class AuthController {
     private userService: UserService,
   ) { }
 
+  // TODO: test register endpoint with database instance
   @Post("/register")
   async register(@Req() req: Request, @Res() res: Response, @Body() user: RegisterUserDto) {
     try {
@@ -21,6 +22,10 @@ export class AuthController {
 
       if(userFound) return res.status(409).json({ message: "User already exists!"});
       
+      await this.userService.createUser(user);
+      this.logger.verbose("User registered!");
+      return res.status(201).json({ message: "User Registered!"})
+
     } catch (error) {
       this.logger.error(error);
       return res.status(500).json({ message: "Internal Server Error!" });
