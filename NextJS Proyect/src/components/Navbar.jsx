@@ -1,6 +1,6 @@
 'use client';
 import { Button, ConfigProvider } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import LogoSharedView from '../../public/ICONO.png';
@@ -19,12 +19,16 @@ const Navbar = () => {
         return `${hour}:${minutes} - ${day}/${month}/${year}`;
     }
 
+    useEffect(() => {
+        getDate();
+    }, [])
+
     return (
-        <div className="flex flex-row items-center px-8 py-4">
+        <div className="flex flex-row items-center py-4">
             <div className='w-1/2 flex justify-start items-center gap-4'>
                 <Image src={LogoSharedView} width={60} height={60} />
-                <div className='flex flex-row gap-1'>
-                    <span className='text-violet-700 font-bold text-lg'>Shared</span>
+                <div className='flex flex-row'>
+                    <span className='text-purple font-bold text-lg'>Shared</span>
                     <span className='font-bold text-lg'>View</span>
                 </div>
             </div>
@@ -42,7 +46,7 @@ const Navbar = () => {
                                 }
                             }}
                         >
-                            <Button size='middle' type='default' icon={<UserOutlined />} className='bg-violet-700 border-none text-white hover:bg-violet-900 hover:text-white'>Login</Button>
+                            <Button size='middle' type='default' icon={<UserOutlined />} className='bg-purple border-none text-white hover:bg-violet-900 hover:text-white'>Login</Button>
                         </ConfigProvider>
                 }
             </div>
