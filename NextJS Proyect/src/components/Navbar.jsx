@@ -1,53 +1,42 @@
 'use client';
-import { Button, ConfigProvider } from 'antd';
-import { useEffect, useState } from 'react';
-import { UserOutlined } from '@ant-design/icons';
+import { useEffect, useState} from 'react';
 import Image from 'next/image';
 import LogoSharedView from '../../public/ICONO.png';
 
-const Navbar = () => {
+const Navbar = ({isLogged}) => {
 
-    const [isLogged, setIsLogged] = useState(true);
+    const [date, setDate] = useState('');
 
     const getDate = () => {
         const date = new Date();
-        const day = date.getDate();
-        const month = date.getMonth();
-        const year = date.getFullYear();
-        const hour = date.getHours();
-        const minutes = date.getMinutes();
-        return `${hour}:${minutes} - ${day}/${month}/${year}`;
+        const day = date.toDateString();
+        const hour = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0') + ':' + date.getSeconds().toString().padStart(2, '0');
+        return setDate(`${hour} - ${day}`);
     }
 
     useEffect(() => {
-        getDate();
+        const interval = setInterval(() => {
+            getDate();
+        }, 1000);
+        return () => clearInterval(interval);
     }, [])
 
     return (
         <div className="flex flex-row items-center py-4">
             <div className='w-1/2 flex justify-start items-center gap-4'>
-                <Image src={LogoSharedView} width={60} height={60} />
+                <Image src={LogoSharedView} width={60} height={60} alt='logo'/>
                 <div className='flex flex-row'>
                     <span className='text-purple font-bold text-lg'>Shared</span>
                     <span className='font-bold text-lg'>View</span>
                 </div>
             </div>
             <div className='w-1/2 flex flex-row items-center justify-end gap-4'>
-                <span className='text-gray-400 text-sm'>{getDate()}</span>
+                <span className='text-gray-400 text-sm'>{date}</span>
                 {
                     isLogged ?
-                        <span className='text-white text-base'>Victor Cortez</span>
-                        :
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorBgTextHover: "#fff",
-                                    colorPrimary: "#fff",
-                                }
-                            }}
-                        >
-                            <Button size='middle' type='default' icon={<UserOutlined />} className='bg-purple border-none text-white hover:bg-violet-900 hover:text-white'>Login</Button>
-                        </ConfigProvider>
+                    <span className='text-white font-bold'>Victor Cortez</span>
+                    :
+                    null
                 }
             </div>
         </div>
