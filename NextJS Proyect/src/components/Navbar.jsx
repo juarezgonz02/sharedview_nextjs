@@ -10,7 +10,7 @@ const Navbar = ({isLogged}) => {
     const getDate = () => {
         const date = new Date();
         const day = date.toDateString();
-        const hour = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0') + ':' + date.getSeconds().toString().padStart(2, '0');
+        const hour = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
         return setDate(`${hour} - ${day}`);
     }
 
