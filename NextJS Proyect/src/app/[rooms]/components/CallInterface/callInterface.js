@@ -4,6 +4,7 @@ import { socketContext } from "../socketContext";
 import LocalAudio from "./LocalAudio";
 import P5Sketch from "@/app/[rooms]/libs/p5";
 import RemoteStream from "@/app/[rooms]/components/CallInterface/RemoteStream";
+import VoiceController from "@/app/[rooms]/components/CallInterface/VoiceController";
 
 const CallInterface = () => {
 
@@ -12,12 +13,13 @@ const CallInterface = () => {
   return (
     <div className="control-users-container">
       <div id="remoteAudio-container">
+          <VoiceController></VoiceController>
           {
               Array.from(users_in_call.current.values()).map((u) =>
-                  u.isMe !== true && <>
-
+                  !u.isMe &&
+                  <>
                     <RemoteStream stream={u.media} id={u.id} key={`audioOf${u.id}`} />
-                    <P5Sketch media={u.media} username={u.id} key={`audioOf${u.id}`} />
+                    <P5Sketch media={u.media} username={u.id} key={`sketchOf${u.id}`} />
                   </>
               )
           }

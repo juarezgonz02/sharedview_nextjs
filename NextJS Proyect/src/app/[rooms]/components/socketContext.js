@@ -9,6 +9,7 @@ export const socketContext = createContext();
 let socket;
 let username = "TEST " + (Math.random()*999).toFixed(0);
 let id
+
 const SocketContext = ({room, children}) => {
 
     const peer = useRef();
@@ -183,8 +184,9 @@ const SocketContext = ({room, children}) => {
     const socketUsages = {
 
         socketConnection: socket,
-        media: userMedia,
+        media: mediaRef,
         rtcPeer: peer,
+        channelReady: channelReady,
         sendChatMessage: (message) => {
             messages.current = [...messagesVals, {room: room, msg: message, from: username, isMe: true }]
             setMessages(messages.current)
