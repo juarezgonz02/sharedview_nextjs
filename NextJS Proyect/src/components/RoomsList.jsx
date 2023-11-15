@@ -8,22 +8,22 @@ const RoomsTable = ({rooms}) => {
         <>
             {
                 rooms.map((room) => (
-                    <div key={room.id} className='flex flex-row items-center gap-4 mt-4'>
-                        <span className='text-white text-sm'>
+                    <div key={room.id} className='flex flex-row items-center tablet:justify-evenly gap-4 mt-4 tablet:w-full phone:gap-2'>
+                        <span className='text-white text-sm phone:text-xs'>
                             <span className='text-white opacity-60'>Codigo: </span>
                             {room.code}
                         </span>
-                        <span className='text-white text-sm'>
+                        <span className='text-white text-sm phone:text-xs'>
                             <span className='text-white opacity-60'>Expira: </span>
                             {room.expDate}
                         </span>
                         {
                             room.isPrivate ?
-                                <span className='text-white text-sm font-bold'>Privada</span>
+                                <span className='text-white text-sm font-bold phone:text-xs'>Privada</span>
                                 :
-                                <span className='text-white text-sm font-bold'>Publica</span>
+                                <span className='text-white text-sm font-bold phone:text-xs'>Publica</span>
                         }
-                        <button className='bg-purple hover:bg-violet-900 text-white text-sm font-bold py-1 px-2 rounded'>Ingresar</button>
+                        <button className='bg-purple hover:bg-violet-900 text-white text-sm font-bold py-1 px-2 rounded phone:px-1 phone:text-xs'>Ingresar</button>
                         <div className='flex flex-row gap-2'>
                         <Popconfirm
                             title="Delete the task"
@@ -51,7 +51,7 @@ const RoomsTable = ({rooms}) => {
         return (
             <div className='flex flex-col mt-3'>
                 <div className='flex flex-row gap-2'>
-                    <h1 className='text-base font-bold text-white'>Tus salas</h1>
+                    <h1 className='text-base font-bold text-white phone:text-sm'>Tus salas</h1>
                     <Tooltip placement="top" title="Only you can have three rooms maximum">
                         <QuestionCircleOutlined />
                     </Tooltip>

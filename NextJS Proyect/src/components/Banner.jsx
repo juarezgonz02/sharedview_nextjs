@@ -13,22 +13,22 @@ const HeaderContent = ({ isLogged }) => {
         <>
             {
                 isLogged ?
-                    <div className="flex flex-col gap-2">
-                        <div className="text-white">
+                    <div className="flex flex-col gap-2 tablet:items-center tablet:justify-center">
+                        <div className="text-white phone:text-start">
                             <span className="text-purple text-4xl font-bold tablet:text-3xl">Shared</span>
                             <span className="text-4xl font-bold tablet:text-3xl">View</span>
                         </div>
-                        <p className="text-base text-gray-400 tablet:text-sm">
+                        <p className="text-base text-gray-400 tablet:text-sm phone:text-center">
                             Crea una sala y comparte el codigo con tus amigos
                         </p>
                     </div>
                     :
-                    <div className="flex flex-col gap-8">
-                        <div className="text-white">
-                            <span className="text-purple text-4xl font-bold">Shared</span>
-                            <span className="text-4xl font-bold">View : Conecta y Comparte de Forma Segura </span>
+                    <div className="flex flex-col gap-8 tablet:items-center tablet:justify-center">
+                        <div className="text-white phone:text-center">
+                            <span className="text-purple text-4xl font-bold tablet:text-3xl">Shared</span>
+                            <span className="text-4xl font-bold tablet:text-3xl">View : Conecta y Comparte de Forma Segura </span>
                         </div>
-                        <p className="text-base text-gray-400">
+                        <p className="text-base text-gray-400 tablet:text-sm phone:text-sm phone:text-center">
                             ¡Conéctate y comparte tu pantalla de forma segura con tus amigos! ¡Experimenta una comunicación visual sin límites!
                         </p>
                     </div>
@@ -66,7 +66,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
         <>
             {
                 isLogged ?
-                    <div className="flex flex-wrap-reverse gap-4">
+                    <div className="flex flex-wrap-reverse gap-4 tablet:items-center tablet:justify-center phone:flex-row">
                         <ConfigProvider
                             theme={{
                                 components: {
@@ -92,6 +92,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                                         colorTextPlaceholder: "rgba(255, 255, 255, 0.4)",
                                         activeBorderColor: "#fff",
                                         hoverBorderColor: "#fff",
+                                        paddingInline: "0.5rem",
                                     },
                                     Select: {
                                         colorBorder: "#1e1e1e",
@@ -110,17 +111,17 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                             <Button    
                                 size="large"
                                 disabled={createRoom}
-                                className="bg-purple hover:bg-violet-900 text-white border-none"
+                                className="bg-purple hover:bg-violet-900 text-white border-none phone:w-full"
                                 icon={<VideoCameraAddOutlined />}
                                 onClick={showModal}
                             >
-                                Nueva reunion
+                                Crear sala
                             </Button>
                             <Modal title="Crear una sala" open={isModalOpen} footer={null} closeIcon={false}>
                                 <CreateRoomForm handleOk={handleOk} handleCancel={handleCancel} />
                             </Modal>
                         </ConfigProvider>
-                        <div className="flex flex-row items-center gap-4">
+                        <div className="flex flex-row items-center gap-4 tablet:gap-2">
                             <ConfigProvider
                                 theme={{
                                     components: {
@@ -140,7 +141,6 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                                     placeholder="Ingresa el codigo de la reunion"
                                     onChange={onChange}
                                     allowClear
-                                    className="h-9"
                                     suffix={
                                         <Tooltip title="Example: xac-1a3-vds">
                                             <InfoCircleOutlined
@@ -175,13 +175,13 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                         >
                             <Button
                                 size="large"
-                                className="bg-purple hover:bg-violet-900 text-white border-none"
+                                className="bg-purple hover:bg-violet-900 text-white border-none w-1/2 tablet:w-full"
                                 icon={<LoginOutlined />}
                             >
                                 Iniciar sesion
                             </Button>
                         </ConfigProvider>
-                        <div className="flex flex-row items-center gap-2">
+                        <div className="flex flex-row items-center justify-start tablet:justify-center gap-2">
                             <span className="text-white text-sm">
                                 ¿No tienes una cuenta?
                             </span>
@@ -221,9 +221,9 @@ const ImagesBanner = ({ isLogged }) => {
         <>
             {
                 isLogged ?
-                    <Image src={LoginBannerIMG} width={500} height={500} alt="img"/>
+                    <Image src={LoginBannerIMG} width={500} height={500} alt="img" className="phone:h-60 phone:w-60"/>
                     :
-                    <Image src={BannerIMG} width={500} height={500} alt="img" />
+                    <Image src={BannerIMG} width={500} height={500} alt="img" className="phone:h-60 phone:w-60" />
             }
         </>
     )
@@ -233,12 +233,12 @@ const ImagesBanner = ({ isLogged }) => {
 
 const Banner = ({ isLogged, rooms }) => {
     return (
-        <div className="flex flex-row items-center justify-evenly  mt-5 tablet:justify-center">
-            <div className="flex flex-col gap-8">
+        <div className="flex flex-row items-center justify-evenly mt-5 tablet:justify-center phone:flex-col-reverse phone:mt-0">
+            <div className="w-1/2 flex flex-col gap-8 tablet:w-full">
                 <HeaderContent isLogged={isLogged} />
                 <Rooms isLogged={isLogged} rooms={rooms} />
             </div>
-            <div className="flex flex-col tablet:hidden">
+            <div className="flex flex-col tablet:hidden phone:flex">
                 <ImagesBanner isLogged={isLogged} />
             </div>
         </div>

@@ -33,17 +33,23 @@ const Navbar = ({ isLogged }) => {
             <div className='flex items-center gap-4'>
                 <Image src={LogoSharedView} width={60} height={60} alt='logo' />
                 <div className='flex flex-row phone:hidden'>
-                    <span className='text-purple font-bold text-lg'>Shared</span>
-                    <span className='font-bold text-lg'>View</span>
+                    <span className='text-purple font-bold text-lg tablet:text-base'>Shared</span>
+                    <span className='font-bold text-lg tablet:text-base'>View</span>
                 </div>
-            </div>  
+            </div>
             <div className='flex flex-row items-center gap-4'>
-            <Clock />
                 {
                     isLogged ?
-                        <span className='text-white font-bold tablet:text-sm'>Victor Cortez</span>
+                        <>
+                            <div className='phone:hidden'>
+                                <Clock />
+                            </div>
+                            <span className='text-white font-bold tablet:text-sm'>Victor Cortez</span>
+                        </>
                         :
-                        null
+                        <div className='phone:flex'>
+                            <Clock />
+                        </div>
                 }
             </div>
         </div>
