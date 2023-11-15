@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { Button, Input, Form, Select, Space } from "antd";
-import { message } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
 
 const onFinish = (formRef) => (values) => {
     console.log("Success:", values);

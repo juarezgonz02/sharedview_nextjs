@@ -1,23 +1,14 @@
-"use client";
-import React, { useState } from 'react'
+import React from 'react'
 import { DeleteOutlined, EllipsisOutlined, QuestionCircleOutlined } from '@ant-design/icons'
-import { Tooltip, Popconfirm,  Modal } from 'antd'
-import CreateRoomForm from './CreateRoomForm';
+import { Tooltip, Popconfirm } from 'antd'
 
 
-const RoomsList = ({ rooms }) => {
-
+const RoomsTable = ({rooms}) => {
     return (
-        <div className='flex flex-col items-start justify-center mt-3'>
-            <div className='flex flex-row gap-2'>
-                <h1 className='text-base font-bold text-white'>Tus salas</h1>
-                <Tooltip placement="top" title="Only you can have three rooms maximum">
-                    <QuestionCircleOutlined />
-                </Tooltip>
-            </div>
+        <>
             {
                 rooms.map((room) => (
-                    <div key={room.id} className='flex flex-row items-center justify-between gap-4 w-full mt-4'>
+                    <div key={room.id} className='flex flex-row items-center gap-4 mt-4'>
                         <span className='text-white text-sm'>
                             <span className='text-white opacity-60'>Codigo: </span>
                             {room.code}
@@ -33,6 +24,7 @@ const RoomsList = ({ rooms }) => {
                                 <span className='text-white text-sm font-bold'>Publica</span>
                         }
                         <button className='bg-purple hover:bg-violet-900 text-white text-sm font-bold py-1 px-2 rounded'>Ingresar</button>
+                        <div className='flex flex-row gap-2'>
                         <Popconfirm
                             title="Delete the task"
                             description="Are you sure to delete this task?"
@@ -45,11 +37,28 @@ const RoomsList = ({ rooms }) => {
                             <DeleteOutlined />
                         </Popconfirm>
                         <EllipsisOutlined />
+                        </div>
                     </div>
                 ))
             }
-        </div>
+        </>
     )
 }
 
-export default RoomsList;
+
+    const RoomsList = ({ rooms }) => {
+
+        return (
+            <div className='flex flex-col mt-3'>
+                <div className='flex flex-row gap-2'>
+                    <h1 className='text-base font-bold text-white'>Tus salas</h1>
+                    <Tooltip placement="top" title="Only you can have three rooms maximum">
+                        <QuestionCircleOutlined />
+                    </Tooltip>
+                </div>
+                <RoomsTable rooms={rooms} />
+            </div>
+        )
+    }
+
+    export default RoomsList;

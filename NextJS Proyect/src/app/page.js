@@ -17,6 +17,12 @@ const roomsList = [
         code: 'xac-1a3-vds',
         isPrivate: true,
     },
+    {
+        id: 3,
+        expDate: '12/12/2021',
+        code: 'xac-1a3-vds',
+        isPrivate: true,
+    },
 ]
 
 const Page = () => {
