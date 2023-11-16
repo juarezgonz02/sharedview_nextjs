@@ -6,33 +6,46 @@ export async function middleware(request) {
 
   const room = request.nextUrl.pathname.substring(1)
 
+  const hasToken = request.cookies.has('token')
+
+  if(!hasToken){
+    return NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}/login`))
+
+  }
+
   try {
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/exproom/${room}`)
+    const token = request.cookies.get('token').value
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_API_PORT}/exproom/${room}`, {
+      headers: {
+        "bearer": token
+      }
+    })
+
     const { exp } = await res.json()
 
-    console.log(res)
-    
-    if (res.status == 200) {
-
-      if (parseInt(exp) < new Date().getTime()) {
-        return NextResponse.next()
-      } else {
-        console.log("EXP", exp)
-        console.log("TIME", new Date().getTime())
-        return NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}/expired`))
+    if (res.status === 200) {
+      if (parseInt(exp) > new Date().getTime()) {
+        return NextResponse.rewrite(new URL(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}/expired`))
       }
-
+      else{
+        return NextResponse.next()
+      }
     }
 
-    if (res.status == 404) {
-
-      return NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}/badcode`))
-
+    if(res.status === 401){
+      return NextResponse.rewrite(new URL(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}/noroomaccess`))
     }
+
+    if (res.status === 404) {
+      return NextResponse.rewrite(new URL(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}/badcode`))
+    }
+
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
 
   } catch (e) {
-    console.log(e)
+    console.log("ERROR AL CONSULTAR API")
     return NextResponse.next()
     //return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }

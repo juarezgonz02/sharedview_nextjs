@@ -19,7 +19,7 @@ const io = new socketIO(server, {
 app.use(cors({ origin: 'http://localhost:3000' }));
 
 app.get('/exproom/*', (req, res) => {
-  res.status(200).sendFile(__dirname+'/rooms.json');
+  res.status(404).sendFile(__dirname+'/rooms.json');
 });
 
 io.on('connection', (socket) => {
