@@ -24,11 +24,11 @@ const HeaderContent = ({ isLogged }) => {
                     </div>
                     :
                     <div className="flex flex-col gap-8 tablet:items-center tablet:justify-center">
-                        <div className="text-white phone:text-center">
+                        <div className="text-white tablet:text-center phone:text-center">
                             <span className="text-purple text-4xl font-bold tablet:text-3xl">Shared</span>
                             <span className="text-4xl font-bold tablet:text-3xl">View : Conecta y Comparte de Forma Segura </span>
                         </div>
-                        <p className="text-base text-gray-400 tablet:text-sm phone:text-sm phone:text-center">
+                        <p className="text-base text-gray-400 tablet:text-sm tablet:text-center phone:text-sm phone:text-center">
                             ¡Conéctate y comparte tu pantalla de forma segura con tus amigos! ¡Experimenta una comunicación visual sin límites!
                         </p>
                     </div>
@@ -66,7 +66,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
         <>
             {
                 isLogged ?
-                    <div className="flex flex-wrap-reverse gap-4 tablet:items-center tablet:justify-center phone:flex-row">
+                    <div className="flex flex-wrap-reverse gap-4 tablet:flex-row tablet:items-center tablet:justify-center">
                         <ConfigProvider
                             theme={{
                                 components: {
@@ -108,7 +108,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                                 },
                             }}
                         >
-                            <Button    
+                            <Button
                                 size="large"
                                 disabled={createRoom}
                                 className="bg-purple hover:bg-violet-900 text-white border-none phone:w-full"
@@ -121,7 +121,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                                 <CreateRoomForm handleOk={handleOk} handleCancel={handleCancel} />
                             </Modal>
                         </ConfigProvider>
-                        <div className="flex flex-row items-center gap-4 tablet:gap-2">
+                        <div className="flex flex-row items-center gap-4 tablet:gap-2 phone:w-full">
                             <ConfigProvider
                                 theme={{
                                     components: {
@@ -159,7 +159,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                         </div>
                     </div>
                     :
-                    <>
+                    <div className="flex flex-col tablet:items-center gap-8">
                         <ConfigProvider
                             theme={{
                                 components: {
@@ -175,7 +175,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                         >
                             <Button
                                 size="large"
-                                className="bg-purple hover:bg-violet-900 text-white border-none w-1/2 tablet:w-full"
+                                className="bg-purple hover:bg-violet-900 text-white border-none w-1/2 tablet:w-1/2"
                                 icon={<LoginOutlined />}
                             >
                                 Iniciar sesion
@@ -187,7 +187,7 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                             </span>
                             <span className="text-purple font-bold ">Registrate</span>
                         </div>
-                    </>
+                    </div>
             }
         </>
     )
@@ -205,7 +205,7 @@ const Rooms = ({ isLogged, rooms }) => {
 
     return (
         <>
-            <BannerControls isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} isLogged={isLogged} createRoom={createRoom}/>
+            <BannerControls isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} isLogged={isLogged} createRoom={createRoom} />
             {
                 isLogged ?
                     <RoomsList rooms={rooms} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
@@ -221,7 +221,7 @@ const ImagesBanner = ({ isLogged }) => {
         <>
             {
                 isLogged ?
-                    <Image src={LoginBannerIMG} width={500} height={500} alt="img" className="phone:h-60 phone:w-60"/>
+                    <Image src={LoginBannerIMG} width={500} height={500} alt="img" className="phone:h-60 phone:w-60" />
                     :
                     <Image src={BannerIMG} width={500} height={500} alt="img" className="phone:h-60 phone:w-60" />
             }

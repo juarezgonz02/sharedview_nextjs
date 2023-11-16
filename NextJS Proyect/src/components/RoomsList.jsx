@@ -49,7 +49,7 @@ const RoomsTable = ({rooms}) => {
     const RoomsList = ({ rooms }) => {
 
         return (
-            <div className='flex flex-col mt-3'>
+            <div className='flex flex-col mt-3 tablet:items-center'>
                 <div className='flex flex-row gap-2'>
                     <h1 className='text-base font-bold text-white phone:text-sm'>Tus salas</h1>
                     <Tooltip placement="top" title="Only you can have three rooms maximum">
