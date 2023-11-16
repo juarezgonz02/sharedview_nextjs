@@ -30,7 +30,7 @@ const Page = () => {
     const [rooms, setRooms] = useState(roomsList)
 
     return (
-        <div className='flex min-h-screen flex-col px-8 mb-8'>
+        <div className='flex flex-col px-8 mb-8'>
             <Navbar isLogged={isLogged} />
             <Banner isLogged={isLogged} rooms={rooms}/>
         </div>
