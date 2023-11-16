@@ -7,6 +7,7 @@ import { VideoCameraAddOutlined, LoginOutlined, InfoCircleOutlined } from "@ant-
 import { Button, Input, ConfigProvider, Tooltip, Modal } from "antd";
 import CreateRoomForm from "./CreateRoomForm";
 import RoomsList from "./RoomsList";
+import Link from "next/link";
 
 const HeaderContent = ({ isLogged }) => {
     return (
@@ -173,13 +174,15 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                                 },
                             }}
                         >
-                            <Button
-                                size="large"
-                                className="bg-purple hover:bg-violet-900 text-white border-none w-1/2 tablet:w-1/2"
-                                icon={<LoginOutlined />}
-                            >
-                                Iniciar sesion
-                            </Button>
+                            <Link href="/login">
+                                <Button
+                                    size="large"
+                                    className="bg-purple hover:bg-violet-900 text-white border-none w-1/2 tablet:w-full phone:w-full"
+                                    icon={<LoginOutlined />}
+                                >
+                                    Iniciar sesion
+                                </Button>
+                            </Link>
                         </ConfigProvider>
                         <div className="flex flex-row items-center justify-start tablet:justify-center gap-2">
                             <span className="text-white text-sm">
@@ -233,12 +236,12 @@ const ImagesBanner = ({ isLogged }) => {
 
 const Banner = ({ isLogged, rooms }) => {
     return (
-        <div className="flex flex-row items-center justify-evenly mt-5 tablet:justify-center phone:flex-col-reverse phone:mt-0">
+        <div className="flex flex-row items-center justify-evenly tablet:justify-center phone:flex-col-reverse phone:mt-0">
             <div className="w-1/2 flex flex-col gap-8 tablet:w-full">
                 <HeaderContent isLogged={isLogged} />
                 <Rooms isLogged={isLogged} rooms={rooms} />
             </div>
-            <div className="flex flex-col tablet:hidden phone:flex">
+            <div className="flex flex-col tablet:hidden phone:hidden">
                 <ImagesBanner isLogged={isLogged} />
             </div>
         </div>

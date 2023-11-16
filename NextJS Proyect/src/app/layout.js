@@ -1,6 +1,7 @@
 import Script from 'next/script'
 import './global.css'
 import { Inter } from 'next/font/google'
+import Navbar from '@/components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <Script src="https://kit.fontawesome.com/b111eba4a9.js" crossorigin="anonymous"></Script>
       <body id="root" className={inter.className}>
-          {children}
+            {children}
       </body>
     </html>
   )

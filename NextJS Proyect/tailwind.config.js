@@ -19,9 +19,6 @@ module.exports = {
         tablet: {'max': '768px'},
         phone: {'max': '479px'},
       },
-      boxShadow:{
-        'shadow-purple': '0 25px 50px -12px rgba(127, 25, 180, 0.25)',
-      }, 
     },
   },
   plugins: [],

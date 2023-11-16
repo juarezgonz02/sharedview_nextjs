@@ -28,7 +28,7 @@ const Clock = () => {
 
 const Navbar = ({ isLogged }) => {
     return (
-        <div className="flex flex-row items-center justify-between py-4">
+        <div className="flex flex-row items-center justify-between py-4 fixed top-0 w-full px-8">
             <div className="flex items-center gap-4">
                 <Image src={LogoSharedView} width={60} height={60} alt="logo" />
                 <div className="flex flex-row phone:hidden">
