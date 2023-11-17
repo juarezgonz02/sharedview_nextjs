@@ -3,7 +3,7 @@ import {socketContext} from "@/app/[rooms]/components/socketContext";
 
 const VoiceController = () => {
 
-    const [muted, setMute] = useState(true)
+    const [muted, setMute] = useState(false)
     const { media, channelReady } = useContext(socketContext)
 
     const switchMute = ()=>{

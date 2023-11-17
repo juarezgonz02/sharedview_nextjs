@@ -82,8 +82,10 @@ const SocketContext = ({room, children}) => {
     }, []);
 
     const gotStream = (stream) => {
+        stream.getAudioTracks()[0].enabled = false
         console.log('Adding local stream.');
         mediaRef.current = stream
+
         setUserMedia(stream)
     }
 
