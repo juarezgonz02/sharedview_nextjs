@@ -83,29 +83,6 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                                         headerBg: "#121212",
                                         titleColor: "#fff",
                                     },
-                                    Form: {
-                                        labelColor: "#fff",
-                                    },
-                                    Input: {
-                                        colorBgContainer: "#1e1e1e",
-                                        colorBorder: "#1e1e1e",
-                                        colorText: "#fff",
-                                        colorTextPlaceholder: "rgba(255, 255, 255, 0.4)",
-                                        activeBorderColor: "#fff",
-                                        hoverBorderColor: "#fff",
-                                        paddingInline: "0.5rem",
-                                    },
-                                    Select: {
-                                        colorBorder: "#1e1e1e",
-                                        colorTextPlaceholder: "rgba(255, 255, 255, 0.4)",
-                                        colorBgContainer: "#1e1e1e",
-                                        optionSelectedBg: "#1e1e1e",
-                                        optionSelectedColor: "#fff",
-                                        colorBgElevated: "#1e1e1e",
-                                        colorText: "#fff",
-                                        colorPrimaryHover: "#fff",
-                                        colorPrimary: "#fff",
-                                    },
                                 },
                             }}
                         >
@@ -188,7 +165,9 @@ const BannerControls = ({ isLogged, isModalOpen, setIsModalOpen, createRoom }) =
                             <span className="text-white text-sm">
                                 ¿No tienes una cuenta?
                             </span>
-                            <span className="text-purple font-bold ">Registrate</span>
+                            <Link href="/registration">
+                                <span className="text-purple font-bold ">Registrate</span>
+                            </Link>
                         </div>
                     </div>
             }
@@ -236,12 +215,12 @@ const ImagesBanner = ({ isLogged }) => {
 
 const Banner = ({ isLogged, rooms }) => {
     return (
-        <div className="flex flex-row items-center justify-evenly px-8 w-full">
+        <div className="flex flex-row items-center justify-evenly px-8 w-full phone:flex-col-reverse phone:justify-center">
             <div className="w-1/2 flex flex-col gap-8 tablet:w-full">
                 <HeaderContent isLogged={isLogged} />
                 <Rooms isLogged={isLogged} rooms={rooms} />
             </div>
-            <div className="flex flex-col tablet:hidden phone:hidden">
+            <div className="flex flex-col">
                 <ImagesBanner isLogged={isLogged} />
             </div>
         </div>
