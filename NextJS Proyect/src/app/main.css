@@ -122,6 +122,15 @@
     height: 100%;
     width: 100%;
   }
+  .loaded-stream-video{
+    max-width: 55vw;
+    height: auto;
+  }
+  .stream-video{
+    display: none;
+    max-width: 55vw;
+    height: auto;
+  }
   .no-stream{
     display: flex;
     color: whitesmoke;
