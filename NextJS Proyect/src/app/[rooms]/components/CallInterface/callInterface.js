@@ -13,17 +13,16 @@ const CallInterface = () => {
   return (
     <div className="control-users-container">
       <div id="remoteAudio-container">
-          <VoiceController></VoiceController>
+          <VoiceController key={"voice-controller-component"}></VoiceController>
           {
               Array.from(users_in_call.current.values()).map((u) =>
                   !u.isMe &&
-                  <>
-                    <RemoteStream stream={u.media} id={u.id} key={`audioOf${u.id}`} />
-                    <P5Sketch media={u.media} username={u.id} key={`sketchOf${u.id}`} />
-                  </>
+                  <div key={`container_of_${u.id}`}>
+                    <RemoteStream stream={u.media} id={u.id} key={`audio_of_${u.id}`} />
+                    <P5Sketch media={u.media} username={u.id} key={`sketch_of_${u.id}`} />
+                  </div>
               )
           }
-          <LocalAudio />
       </div>
 
 
@@ -35,7 +34,7 @@ const CallInterface = () => {
         <div className="userList" id="u_list">
           {
               Array.from(users_in_call.current.values()).map((u) =>
-                  <div className="user_name_item" key={u.id}> {u.username} </div>
+                  <div className="user_name_item" key={"user"+u.id}> {u.username} </div>
             )
           }
         </div>
