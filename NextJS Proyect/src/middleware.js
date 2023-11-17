@@ -30,7 +30,18 @@ export async function middleware(request) {
         return NextResponse.rewrite(new URL(`${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}/expired`))
       }
       else{
-        return NextResponse.next()
+        const response =  NextResponse.next()
+        response.cookies.set({
+          name: 'sign',
+          value: md5(`/live/${room}-${exp}-nodemediahls`),
+          path: `/${room}`,
+        })
+        response.cookies.set({
+          name: 'room-exp',
+          value: exp,
+          path: `/${room}`,
+        })
+        return response
       }
     }
 
