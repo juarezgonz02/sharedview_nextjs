@@ -30,9 +30,11 @@ const Page = () => {
     const [rooms, setRooms] = useState(roomsList)
 
     return (
-        <div className='flex flex-col justify-center items-center px-8 min-h-screen'>
+        <div className='flex flex-col min-h-screen'>
             <Navbar isLogged={isLogged} />
-            <Banner isLogged={isLogged} rooms={rooms}/>
+            <div className='flex flex-1 justify-between'>
+                <Banner isLogged={isLogged} rooms={rooms} />
+            </div>
         </div>
     );
 };

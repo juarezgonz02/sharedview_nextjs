@@ -236,7 +236,7 @@ const ImagesBanner = ({ isLogged }) => {
 
 const Banner = ({ isLogged, rooms }) => {
     return (
-        <div className="flex flex-row items-center justify-evenly tablet:justify-center phone:flex-col-reverse phone:mt-0">
+        <div className="flex flex-row items-center justify-evenly px-8 w-full">
             <div className="w-1/2 flex flex-col gap-8 tablet:w-full">
                 <HeaderContent isLogged={isLogged} />
                 <Rooms isLogged={isLogged} rooms={rooms} />
