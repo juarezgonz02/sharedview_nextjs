@@ -10,9 +10,14 @@ pool:
   name: API_POOL
 
 jobs:
+
 - job: Build
   displayName: 'Build job'
   steps:
+  - script: |
+      npm install -g pm2
+    displayName: 'Install PM2'
+
   - script: |
       git checkout dev
       cd api
@@ -20,3 +25,4 @@ jobs:
       npm run build
       pm2 start dist/main --name api 
     displayName: 'npm install and build'
+    
