@@ -26,6 +26,8 @@ const Clock = () => {
     return <span className="text-gray-400 text-sm tablet:text-xs">{date}</span>;
 };
 
+
+
 const Navbar = ({ isLogged, username }) => {
     return (
         <div className="flex flex-row items-center justify-between py-4 top-0 w-full px-8">
