@@ -9,9 +9,13 @@ trigger:
 pool:
   name: API_POOL
 
-- script: |
-    cd ./'api'
-    npm install
-    npm run build
-    pm2 start dist/main --name api 
-  displayName: 'npm install and build'
+jobs:
+- job: Build
+  displayName: 'Build job'
+  steps:
+  - script: |
+      cd api
+      npm install
+      npm run build
+      pm2 start dist/main --name api 
+    displayName: 'npm install and build'
