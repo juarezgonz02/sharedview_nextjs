@@ -26,4 +26,16 @@ export class RoomService{
         createdRoom.expirationDate.setUTCDate(createdAt.getUTCDate()+1);
         await createdRoom.save();
     }
+
+    async getRoom(roomCode: string){
+        const queryResults = await this.roomModel.findOne({ code: roomCode})
+            .select("-createdAt -updatedAt -__v")
+            .exec();
+        return queryResults;
+    }
+
+    async deleteRoom(roomCode: string){
+        const queryResults = await this.roomModel.deleteOne({ code: roomCode})
+            .exec()
+    }
 }
