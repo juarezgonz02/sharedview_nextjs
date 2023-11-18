@@ -2,20 +2,39 @@
 import React from 'react';
 import { Form, Input, Button, ConfigProvider } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation'
 
+const onFinish = (router) => async (values) => {
+    const { identifier, password } = values;
+    try{
+        const response = await fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identifier, password }),
+        });
+        
+        if (response.status === 200) {
+            const data = await response.json();
+            localStorage.setItem("token", data.token);
+            router.push("/");
+        } else {
+            console.log("Error");
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const LoginForm = () => {
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-    };
-
+    const router = useRouter();
     return (
         <Form
             name="normal_login"
             initialValues={{
                 remember: true,
             }}
-            onFinish={onFinish}
+            onFinish={onFinish(router)}
             layout='vertical'
         >
             <ConfigProvider
@@ -60,7 +79,7 @@ const LoginForm = () => {
             >
                 <Form.Item
                     label="Username"
-                    name="username"
+                    name="identifier"
                     rules={[
                         {
                             required: true,

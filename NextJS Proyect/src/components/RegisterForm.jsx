@@ -1,12 +1,29 @@
 'use client';
 import React from 'react';
 import { Form, Input, Button, ConfigProvider } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation'
+
+const onFinish = (router) => async (values) => {
+    const { name, username, email, password } = values;
+    try {
+        const response = await fetch('http://localhost:3000/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, username, email, password })
+        });
+
+        if (response.status === 201) {
+            router.push('/login');
+        } else {
+            console.log("Error");
+        }
+    } catch (error) {
+        console.log(error)
+    }
+};
 
 const RegisterForm = () => {
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-    };
+    const router = useRouter();
 
     return (
         <ConfigProvider
@@ -57,7 +74,7 @@ const RegisterForm = () => {
                 initialValues={{
                     remember: true,
                 }}
-                onFinish={onFinish}
+                onFinish={onFinish(router)}
                 layout='vertical'
                 style={{
                     width: "100%",
@@ -115,20 +132,20 @@ const RegisterForm = () => {
                     />
                 </Form.Item>
                 <Form.Item>
-                        <Button
-                            type="default"
-                            htmlType="submit"
-                            style={{
-                                backgroundColor: "#7f19b4",
-                                color: "#fff",
-                                borderColor: "#7f19b4",
-                                width: "100%",
-                                marginTop: "10px",
-                            }}
-                            className='hover:bg-purple-600'
-                        >
-                            Register
-                        </Button>
+                    <Button
+                        type="default"
+                        htmlType="submit"
+                        style={{
+                            backgroundColor: "#7f19b4",
+                            color: "#fff",
+                            borderColor: "#7f19b4",
+                            width: "100%",
+                            marginTop: "10px",
+                        }}
+                        className='hover:bg-purple-600'
+                    >
+                        Register
+                    </Button>
                 </Form.Item>
             </Form>
         </ConfigProvider>

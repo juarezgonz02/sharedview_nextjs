@@ -19,13 +19,22 @@ const roomsList = [
     },
 ]
 
+const decodedJWT = (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    const decoded = JSON.parse(window.atob(base64));
+    return decoded;
+};
+
 const Page = () => {
-    const [isLogged, setIsLogged] = useState(true);
     const [rooms, setRooms] = useState(roomsList)
+    const token = localStorage.getItem('token');
+    const isLogged = token ? true : false;
+    const username = isLogged ? decodedJWT(token).username : null;
 
     return (
         <div className='flex flex-col min-h-screen'>
-            <Navbar isLogged={isLogged} />
+            <Navbar isLogged={isLogged} username={username} />
             <div className='flex flex-1 justify-between '>
                 <Banner isLogged={isLogged} rooms={rooms} />
             </div>
