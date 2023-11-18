@@ -41,6 +41,11 @@ export class RoomService{
         return queryResults;
     }
 
+    async toggleRoomPublicStatus(code: string, ownerId: string){
+        const room = await this.getRoomInfo(code);
+        const roomUpdated = await this.roomModel.updateOne({code:code},{ isPublic: !room.isPublic});
+    }
+
     async deleteRoom(roomCode: string){
         const queryResults = await this.roomModel.deleteOne({ code: roomCode})
             .exec()

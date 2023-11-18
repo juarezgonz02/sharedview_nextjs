@@ -78,23 +78,21 @@ export class RoomController{
     }
 
     @UseGuards(AuthGuard)
-    @Patch(":code")
+    @Patch("/:code")
     async togglePublicStatus(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
         try {
             this.logger.verbose("Toggling room's publicity...");
             const roomFound = await this.roomService.getRoomInfo(code);
-
             if(!roomFound){
                 this.logger.verbose("Room not found.")
                 return res.status(404).json({ message: "Room was not found!"});
             };
-
             //TODO: convert this into middleware or guard.
             if(roomFound.owner != req.user["id"]){
                 this.logger.verbose("User is not the owner")
                 return res.status(403).json({ message: "Forbidden!" });
             };
-
+            await this.roomService.toggleRoomPublicStatus(code, req.user["id"])
             this.logger.verbose("Room toggled!");
             return res.status(200).json({message: "Room's privacy has been toggled!"})
         } catch (error) {
