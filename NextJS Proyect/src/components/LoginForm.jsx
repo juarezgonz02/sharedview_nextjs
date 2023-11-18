@@ -1,33 +1,17 @@
-"use client"
-import React from 'react';
-import { Form, Input, Button, ConfigProvider } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/navigation'
+"use client";
+import React from "react";
+import { Form, Input, Button, ConfigProvider } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
+import { useFetchLogin } from "./hooks/useFetchLogin.js";
 
-const onFinish = (router) => async (values) => {
-    const { identifier, password } = values;
-    try{
-        const response = await fetch("http://localhost:3000/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ identifier, password }),
-        });
-        
-        if (response.status === 200) {
-            const data = await response.json();
-            localStorage.setItem("token", data.token);
-            router.push("/");
-        } else {
-            console.log("Error");
-        }
-
-    } catch (error) {
-        console.log(error);
-    }
+const onFinish = (router) => (values) => {
+    useFetchLogin(router, values);
 };
 
 const LoginForm = () => {
     const router = useRouter();
+    
     return (
         <Form
             name="normal_login"
@@ -35,7 +19,7 @@ const LoginForm = () => {
                 remember: true,
             }}
             onFinish={onFinish(router)}
-            layout='vertical'
+            layout="vertical"
         >
             <ConfigProvider
                 theme={{
@@ -83,11 +67,14 @@ const LoginForm = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: "Please input your Username!",
                         },
                     ]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Input your username" />
+                    <Input
+                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        placeholder="Input your username"
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Password"
@@ -95,7 +82,7 @@ const LoginForm = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Password!',
+                            message: "Please input your Password!",
                         },
                     ]}
                 >
@@ -106,7 +93,7 @@ const LoginForm = () => {
                     />
                 </Form.Item>
                 <Form.Item>
-                    <div className='flex flex-col items-center justify-between text-white gap-2'>
+                    <div className="flex flex-col items-center justify-between text-white gap-2">
                         <Button
                             type="default"
                             htmlType="submit"
@@ -124,6 +111,6 @@ const LoginForm = () => {
             </ConfigProvider>
         </Form>
     );
-}
+};
 
-export default LoginForm
+export default LoginForm;

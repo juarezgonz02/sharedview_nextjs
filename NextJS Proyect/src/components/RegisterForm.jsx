@@ -1,25 +1,10 @@
 'use client';
-import React from 'react';
 import { Form, Input, Button, ConfigProvider } from 'antd';
-import { useRouter } from 'next/navigation'
+import { useFetchRegister } from './hooks/useFetchRegister.js';
+import { useRouter } from "next/navigation";
 
-const onFinish = (router) => async (values) => {
-    const { name, username, email, password } = values;
-    try {
-        const response = await fetch('http://localhost:3000/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, username, email, password })
-        });
-
-        if (response.status === 201) {
-            router.push('/login');
-        } else {
-            console.log("Error");
-        }
-    } catch (error) {
-        console.log(error)
-    }
+const onFinish = (router) => (values) => {
+    useFetchRegister(values, router);
 };
 
 const RegisterForm = () => {
