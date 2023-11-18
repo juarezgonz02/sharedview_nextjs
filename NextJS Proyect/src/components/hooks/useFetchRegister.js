@@ -11,30 +11,35 @@ const callRegisterApi = async (data) => {
         return response;
     } catch (error) {
         console.log(error);
-        throw error; 
+        throw error;
     }
 };
 
-const handleResponse = (response, router) => {
+const handleResponse = async (response, requestData, router, onSuccess, onError) => {
     if (response.status === 201) {
-        // If the response status is 201 (Created), extract username from data and store it in local storage
-        const { username } = data;
+        const { username } = requestData;
         localStorage.setItem("username", username);
-        // Redirecting the user to the login page using the router
+        onSuccess("Account created successfully");
         router.push("/login");
     } else {
-        console.log("Error");
+        try {
+            const errorData = await response.json();
+            const errorMessage = errorData.message || "Error en el servidor";
+            onError(errorMessage);
+        } catch (error) {
+            onError("Error en el servidor");
+        }
     }
 };
 
 // Asynchronous function for handling user registration API call and response
-export const useFetchRegister = async (values, router) => {
+export const useFetchRegister = async (values, router, onSuccess, onError) => {
     const { name, username, email, password } = values;
     try {
         const response = await callRegisterApi({ name, username, email, password });
-        handleResponse(response, router);
+        handleResponse(response, { username }, router, onSuccess, onError);
     } catch (error) {
-        console.error("Error al procesar el registro:", error.message);
+        console.log("Error al procesar el registro:", error.message);
     }
 };
 

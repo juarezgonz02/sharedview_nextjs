@@ -2,13 +2,16 @@
 import { Form, Input, Button, ConfigProvider } from 'antd';
 import { useFetchRegister } from './hooks/useFetchRegister.js';
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from 'react-hot-toast';
 
-const onFinish = (router) => (values) => {
-    useFetchRegister(values, router);
+const onFinish = (router, onSuccess, onError) => (values) => {
+    useFetchRegister(values, router, onSuccess, onError);
 };
 
 const RegisterForm = () => {
     const router = useRouter();
+    const onSuccess = (message) => toast.success(message);
+    const onError = (message) => toast.error(message);
 
     return (
         <ConfigProvider
@@ -59,7 +62,7 @@ const RegisterForm = () => {
                 initialValues={{
                     remember: true,
                 }}
-                onFinish={onFinish(router)}
+                onFinish={onFinish(router, onSuccess, onError)}
                 layout='vertical'
                 style={{
                     width: "100%",
@@ -133,6 +136,7 @@ const RegisterForm = () => {
                     </Button>
                 </Form.Item>
             </Form>
+            <Toaster />
         </ConfigProvider>
     );
 }
