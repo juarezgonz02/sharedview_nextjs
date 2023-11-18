@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Query, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, Req, Res, UseGuards } from "@nestjs/common";
 import { CreateRoomDto } from "./models/dtos/CreateRoomDto";
 import { AuthGuard } from "src/auth/auth.guard";
 import { RoomService } from "./room.service";
@@ -14,12 +14,11 @@ export class RoomController{
     /*
     Endpoints:
     CreateRoom<name>(Private) => Room DONE
-    GetExpirationDate<code> (Public) => Date
-    TogglePublic<code> (Private) => void
+    GetExpirationDate<code> (Public) => Date DONE
+    TogglePublic<code> (Private) => void 
     DeleteRoom<code> (Private) => void DONE
     ToggleUserAccess<username> (Private) => void
-    CanAccess() => Boolean
-    isExpired() => Boolean
+    CheckStatus<code> (Public) => statusObject
     */
     @UseGuards(AuthGuard)
     @Post()
@@ -27,9 +26,10 @@ export class RoomController{
         try {
             this.logger.verbose("Creating Room...");
             const userId = req.user["id"];
-            await this.roomService.createRoom(room, userId);
+            const roomCreated = await this.roomService.createRoom(room, userId);
+            this.logger.verbose(roomCreated)
             this.logger.verbose("Room created!");
-            return res.status(201).json({message: "Room has been created!"})
+            return res.status(201).json({message: "Room has been created!"});
         } catch (error) {
             this.logger.error(error);
             return res.status(500).json({ message: "Internal Server Error!" });
@@ -37,14 +37,15 @@ export class RoomController{
     }
 
     @Get("/:code")
-    async getExpirationdate(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
+    async getRoomByCode(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
         try {
             this.logger.verbose("Fetching Expiration Status");
-
-            const roomExp =  this.roomService.getRoom(code);
-
+            const room = await this.roomService.getRoomPublic(code);
+            if(!room){
+                return res.status(404).json({ message: "Room was not found!" });
+            }
             this.logger.verbose("Expiration Status Fetched!");
-            return res.status(200).json()
+            return res.status(200).json({ room: room })
         } catch (error) {
             this.logger.error(error);
             return res.status(500).json({ message: "Internal Server Error!" });
@@ -56,12 +57,46 @@ export class RoomController{
     async deleteRoom(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
         try {
             this.logger.verbose("Deleting Room...");
-            const room = await this.roomService.getRoom(code);
-            //TODO: conver this into middleware or guard.
-            if(room.owner[0] != req.user["id"]) return res.status(403).json({ message: "Forbidden!" });
+            const room = await this.roomService.getRoomInfo(code);
+            if(!room){
+                this.logger.verbose("Room not found.")
+                return res.status(404).json({ message: "Room was not found!"});
+            };
+
+            //TODO: convert this into middleware or guard.
+            if(room.owner != req.user["id"]){
+                this.logger.verbose("User is not the owner")
+                return res.status(403).json({ message: "Forbidden!" });
+            };
             await this.roomService.deleteRoom(code);
             this.logger.verbose("Room Deleted!");
-            return res.status(200).json({message: "Room has been deleted!"})
+            return res.status(200).json({message: "Room has been deleted!"});
+        } catch (error) {
+            this.logger.error(error);
+            return res.status(500).json({ message: "Internal Server Error!" });
+        }
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch(":code")
+    async togglePublicStatus(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
+        try {
+            this.logger.verbose("Toggling room's publicity...");
+            const roomFound = await this.roomService.getRoomInfo(code);
+
+            if(!roomFound){
+                this.logger.verbose("Room not found.")
+                return res.status(404).json({ message: "Room was not found!"});
+            };
+
+            //TODO: convert this into middleware or guard.
+            if(roomFound.owner != req.user["id"]){
+                this.logger.verbose("User is not the owner")
+                return res.status(403).json({ message: "Forbidden!" });
+            };
+
+            this.logger.verbose("Room toggled!");
+            return res.status(200).json({message: "Room's privacy has been toggled!"})
         } catch (error) {
             this.logger.error(error);
             return res.status(500).json({ message: "Internal Server Error!" });

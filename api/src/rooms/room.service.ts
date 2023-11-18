@@ -24,12 +24,19 @@ export class RoomService{
         let createdAt = new Date();
         createdRoom.creationDate.setUTCDate(createdAt.getUTCDate());
         createdRoom.expirationDate.setUTCDate(createdAt.getUTCDate()+1);
-        await createdRoom.save();
+        return await createdRoom.save();
     }
 
-    async getRoom(roomCode: string){
+    async getRoomInfo(roomCode: string){
         const queryResults = await this.roomModel.findOne({ code: roomCode})
             .select("-createdAt -updatedAt -__v")
+            .exec();
+        return queryResults;
+    }
+
+    async getRoomPublic(roomCode: string){
+        const queryResults = await this.roomModel.findOne({ code: roomCode})
+            .select("-owner -accessUsers -createdAt -updatedAt -__v")
             .exec();
         return queryResults;
     }
