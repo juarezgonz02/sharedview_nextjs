@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, HttpStatus, Logger, Post, Req, Res } from "@nestjs/common";
 import { Request, Response } from "express";
 import { UserService } from "src/users/user.service";
 import { RegisterUserDto } from "../users/models/dtos/registerUser.dto"
@@ -41,16 +41,11 @@ export class AuthController {
     try {
       this.logger.verbose("User attempting to log in...");
       const userFound = await this.userService.findUserByIdentifier(user.identifier);
-      if(!userFound) return res.status(404).json({ error: "User not found! "})
-
+      if(!userFound) return res.status(404).json({ error: "User not found! "});
       this.logger.verbose("Checking credentials")
-      this.logger.debug(userFound);
-      this.logger.debug(user.identifier);
-      this.logger.debug(await bcrypt.hash(user.password, userFound.salt));
       if(userFound.password != await bcrypt.hash(user.password, userFound.salt)){
         return res.status(401).json({ error: "Unauthorized!"});
       }
-
       const token = await this.authService.login(user);
 
       this.logger.verbose("Login Succesful!");
