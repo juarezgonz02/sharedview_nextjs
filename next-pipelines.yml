@@ -8,7 +8,7 @@ trigger:
 - dev
 
 pool:
-  name: API_POOL
+  name: Default
 
 jobs:
 
