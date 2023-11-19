@@ -18,7 +18,7 @@ const Page = () => {
                             <span className="text-base phone:text-sm">
                                 Doesn't have an account?{" "}
                                 <a
-                                    href=""
+                                    href="/registration"
                                     className="text-purple underline hover:text-fuchsia-600"
                                 >
                                     Register now!
