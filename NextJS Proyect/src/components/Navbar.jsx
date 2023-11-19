@@ -26,9 +26,11 @@ const Clock = () => {
     return <span className="text-gray-400 text-sm tablet:text-xs">{date}</span>;
 };
 
-const Navbar = ({ isLogged }) => {
+
+
+const Navbar = ({ isLogged, username }) => {
     return (
-        <div className="flex flex-row items-center justify-between py-4 fixed top-0 w-full px-8">
+        <div className="flex flex-row items-center justify-between py-4 top-0 w-full px-8">
             <div className="flex items-center gap-4">
                 <Image src={LogoSharedView} width={60} height={60} alt="logo" />
                 <div className="flex flex-row phone:hidden">
@@ -45,7 +47,7 @@ const Navbar = ({ isLogged }) => {
                             <Clock />
                         </div>
                         <span className="text-white font-bold tablet:text-sm">
-                            Victor Cortez
+                            {username}
                         </span>
                     </>
                 ) : (
