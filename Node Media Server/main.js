@@ -16,7 +16,7 @@ const relay3 = new NodeMediaServer(pull_config_2)
 const consult_api_for_room = async (streamPath) => {
   
   //TODO: change path to /checkroom/{stream} 
-  const stream = streamPath.substring(4) 
+  const stream = streamPath.substring(6) 
 
   const API_ENV_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}:${process.env.API_PORT}`
 
