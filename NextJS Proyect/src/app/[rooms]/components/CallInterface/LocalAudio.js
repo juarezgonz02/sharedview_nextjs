@@ -16,7 +16,7 @@ const LocalAudio = () => {
             return
         }
         console.log(mediaUser)
-        localAudio.current.srcObject = mediaUser
+        localAudio.current.srcObject = mediaUser.current
     }, [mediaUser]);
 
 

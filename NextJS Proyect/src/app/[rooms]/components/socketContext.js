@@ -9,6 +9,7 @@ export const socketContext = createContext();
 let socket;
 let username = "TEST " + (Math.random()*999).toFixed(0);
 let id
+
 const SocketContext = ({room, children}) => {
 
     const peer = useRef();
@@ -81,8 +82,10 @@ const SocketContext = ({room, children}) => {
     }, []);
 
     const gotStream = (stream) => {
+        stream.getAudioTracks()[0].enabled = false
         console.log('Adding local stream.');
         mediaRef.current = stream
+
         setUserMedia(stream)
     }
 
@@ -183,8 +186,9 @@ const SocketContext = ({room, children}) => {
     const socketUsages = {
 
         socketConnection: socket,
-        media: userMedia,
+        media: mediaRef,
         rtcPeer: peer,
+        channelReady: channelReady,
         sendChatMessage: (message) => {
             messages.current = [...messagesVals, {room: room, msg: message, from: username, isMe: true }]
             setMessages(messages.current)
