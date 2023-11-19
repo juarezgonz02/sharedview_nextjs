@@ -28,9 +28,10 @@ jobs:
       echo "MONGODB_NAME=$MONGODB_NAME" >> .env.temp
       echo "JWT_SECRET=$JWT_SECRET" >> .env.temp
       cp -f .env.temp .env
+      cat .env
       npm install
       npm install pm2 --force 
       npm run build
-      pm2 start dist/main.js --name api 
+      npm run start:prod 
     displayName: 'npm install and build'
     
