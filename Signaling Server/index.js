@@ -1,33 +1,36 @@
 import express from 'express';
-import http from 'http';
+import { createServer } from 'http';
 import { Server as socketIO } from 'socket.io'; // Import 'Server' from socket.io as 'socketIO'
 import cors from 'cors'; // Import the 'cors' middleware
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { createAdapter } from "@socket.io/cluster-adapter";
+import { setupWorker } from "@socket.io/sticky";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const server = http.createServer(app);
+
+const server = createServer(app);
 
 const io = new socketIO(server, { 
   cors: {
-    origin: "http://localhost:3000"
-}}); // Create a new instance of the 'Server' class
+    origin: ["http://localhost:3000", "https://www.sharedview.live", "https://sharedview.live"]
+}}); 
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+io.adapter(createAdapter());
 
-app.get('/exproom/*', (req, res) => {
-  res.status(404).sendFile(__dirname+'/rooms.json');
-});
+setupWorker(io);
+
+app.use(cors({ origin: ['http://localhost:3000', "https://sharedview.live", "https://www.sharedview.live"] }));
 
 io.on('connection', (socket) => {
   console.log('A user connected');
 
   socket.on('newMessage', (data) => {
     console.log(data)
-    io.in(data.room).except(data.fromSocket).emit("incoming-message", data)
+    io.in(data.room).except(socket.id).emit("incoming-message", data)
   })
   
   socket.on('received', (data) => {
@@ -42,7 +45,7 @@ io.on('connection', (socket) => {
 
     console.log("offerToRoom", data)
 
-    io.in(data.room).emit("new-peer", data)
+    io.in(data.room).except(socket.id).emit("new-peer", data)
 
     socket.join(data.room)
 
@@ -50,6 +53,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
+    socket.in(Array.from(socket.rooms)[1]).emit("user_disconnected", socket.id)
   });
 });
 
