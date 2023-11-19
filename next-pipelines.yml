@@ -30,6 +30,7 @@ jobs:
       cp -f .env.temp .env.local
       cat .env.local
       npm install
+      npm install sharp
       npm install pm2 --force 
       npm run build
       npm run start
