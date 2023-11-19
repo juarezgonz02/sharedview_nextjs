@@ -1,8 +1,10 @@
 
 // Asynchronous function to make a POST request to register API
 const callRegisterApi = async (data) => {
+    const env_url = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_API_HOST}`
+
     try {
-        const response = await fetch("http://localhost:3000/auth/register", {
+        const response = await fetch(`${env_url}:${process.env.NEXT_PUBLIC_API_PORT}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),

@@ -5,6 +5,10 @@ import { RegisterUserDto } from "../users/models/dtos/registerUser.dto"
 import { LoginUserDto } from "../users/models/dtos/loginUser.dto";
 import * as bcrypt from "bcrypt";
 import { AuthService } from "./auth.service";
+import {config} from 'dotenv'
+
+config()
+
 @Controller("auth")
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
@@ -49,9 +53,18 @@ export class AuthController {
       const token = await this.authService.login(user);
 
       this.logger.verbose("Login Succesful!");
-      return res.status(200).json({
-        token: token
-      })
+
+      return res.status(200)
+          .cookie("token", token, {
+              maxAge: 604800016,
+              secure: process.env.NODE_ENV === 'production',
+              httpOnly: true,
+              path: "/",
+              domain: process.env.APP_DOMAIN,
+            })
+          .json({
+              token: token
+          })
 
     } catch (error) {
       this.logger.error(error);
