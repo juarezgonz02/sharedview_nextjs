@@ -4,8 +4,6 @@ const ENV_URL = `${process.env.NEXT_PUBLIC_WEB_PROTOCOL}://${process.env.NEXT_PU
 
 export const sessionMiddleware = async (request) => {
 
-    console.log("Request Cookies", request.cookies.getAll())
-
     if(request.cookies.has("token")){
         return NextResponse.redirect(ENV_URL+"/home")
     }
@@ -20,4 +18,10 @@ export const homePageSessionMiddleware = async (request) => {
     }
 
     return NextResponse.next()
+}
+
+export const loggedMiddleware = (request) => {
+    if(request.cookies.has("token")){
+        return NextResponse.redirect(ENV_URL+"/home")
+    }
 }

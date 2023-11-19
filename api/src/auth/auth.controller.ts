@@ -57,10 +57,10 @@ export class AuthController {
       return res.status(200)
           .cookie("token", token, {
               maxAge: 604800016,
+              secure: process.env.NODE_ENV === 'production',
               httpOnly: true,
-              path:"/*",
-              domain: `${process.env.APP_DOMAIN}:${process.env.APP_PORT}`,
-              encode: String
+              path: "/",
+              domain: process.env.APP_DOMAIN,
             })
           .json({
               token: token
