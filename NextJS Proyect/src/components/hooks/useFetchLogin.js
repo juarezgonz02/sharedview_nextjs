@@ -18,10 +18,11 @@ const callLoginApi = async (data) => {
     }
 };
 
-const handleLoginResponse = async (response, router, onSuccess, onError) => {
+const handleLoginResponse = async (data, response, router, onSuccess, onError) => {
     if (response.status === 200) {
         // If the response status is 200 (OK), redirect the user to the home page using the router
         onSuccess("Logged in successfully");
+        saveUsernameToStorage(data.identifier)
         router.push("/");
     } else if(response.status === 404) {
         // If the response status is 401 (Unauthorized), show an error message
@@ -39,13 +40,17 @@ const handleLoginResponse = async (response, router, onSuccess, onError) => {
     }
 };
 
+const saveUsernameToStorage = (identifier) => {
+    localStorage.setItem("username", identifier);
+}
+
 // Asynchronous function for handling user login API call and response
 export const useFetchLogin = async (values, router, onSuccess, onError) => {
     const { identifier, password } = values;
 
     try {
         const response = await callLoginApi({ identifier, password });
-        handleLoginResponse(response, router, onSuccess, onError);
+        await handleLoginResponse(values, response, router, onSuccess, onError);
     } catch (error) {
         console.error("Error al procesar el inicio de sesión:", error.message);
     }

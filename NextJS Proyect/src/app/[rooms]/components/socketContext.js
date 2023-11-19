@@ -7,10 +7,10 @@ import {Peer} from "peerjs";
 export const socketContext = createContext();
 
 let socket;
-let username = "TEST " + (Math.random()*999).toFixed(0);
 let id
 
 const SocketContext = ({room, children}) => {
+    const username =  localStorage.getItem("username") || `USER ${(Math.random()*999).toFixed(0)}`
 
     const peer = useRef();
 
@@ -32,10 +32,13 @@ const SocketContext = ({room, children}) => {
 
     useEffect(() => {
 
+        const socket_url = `${process.env.NEXT_PUBLIC_MEDIA_PROTOCOL}://${process.env.NEXT_PUBLIC_MEDIA_HOST}:${process.env.NEXT_PUBLIC_MEDIA_PORT}`
 
-        socket = io("http://localhost")
+        socket = io(socket_url, {
+            path: "/io/socket.io"
+        })
 
-        console.log("Try connection")
+        console.log("Try connection", socket_url)
 
         socket.on("connect", ()=>{
             console.log("Server Connected ")

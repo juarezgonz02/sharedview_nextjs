@@ -13,30 +13,37 @@ const StreamPlayer = () => {
 
         const { rooms } = useParams()
 
-        const videoSrc = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_HLS_PORT}/live/${rooms}.flv` +
+        const videoSrc = `${process.env.NEXT_PUBLIC_MEDIA_PROTOCOL}://${process.env.NEXT_PUBLIC_MEDIA_HOST}:${process.env.NEXT_PUBLIC_MEDIA_PORT}/live/${rooms}.flv` +
             `?sign=${Cookies.get('room-exp')}-${Cookies.get('sign')}`;
 
         const play_stream = async () => {
 
-          if (flv.isSupported()) {
+            try{
 
+              if (flv.isSupported()) {
 
-              const flvPlayer = flv.createPlayer({
-                  type: 'flv',
-                  url: videoSrc,
-                  isLive: true
-              });
+                  flv.LoggingControl.enableError = false
+                  flv.LoggingControl.enableAll = false
+                  
+                  const flvPlayer = flv.createPlayer({
+                      type: 'flv',
+                      url: videoSrc,
+                      isLive: true
+                  });
 
-              flvPlayer.on(flv.Events.METADATA_ARRIVED, ()=>{
-                  setLoaded(true)
-                  videoPlayerElement.current.className  = "loaded-stream-video"
-              })
+                  flvPlayer.on(flv.Events.METADATA_ARRIVED, ()=>{
+                      setLoaded(true)
+                      videoPlayerElement.current.className  = "loaded-stream-video"
+                  })
 
-              flvPlayer.attachMediaElement(videoPlayerElement.current);
-              flvPlayer.load();
-              flvPlayer.play()
+                  flvPlayer.attachMediaElement(videoPlayerElement.current);
+                  flvPlayer.load();
+                  flvPlayer.play()
 
-          }
+              }
+            } catch (e) {
+                console.log("Stream Server Connection Failed")
+            }
         }
 
         useEffect(() => {

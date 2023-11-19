@@ -1,6 +1,5 @@
 'use client';
 import Chat from "./components/ChatComponent/chat";
-import './main.css'
 import SocketContext from "./components/socketContext";
 import StreamPlayer from "./components/StreamPlayer/streamplayer";
 import CallInterface from "./components/CallInterface/callInterface";

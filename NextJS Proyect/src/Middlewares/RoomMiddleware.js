@@ -1,18 +1,25 @@
 import {NextResponse} from "next/server";
 import md5 from "md5";
 
-const ENV_URL = `${process.env.NEXT_PUBLIC_WEB_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}`
+const API_ENV_URL = `${process.env.NEXT_PUBLIC_WEB_PROTOCOL}://${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}`
 
-const fetchRoomExp = async (room, token) => {
+const WEB_ENV_URL = `${process.env.NEXT_PUBLIC_WEB_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}`
 
-    const res = await fetch(`${ENV_URL}:${process.env.NEXT_PUBLIC_API_PORT}/exproom/${room}`, {
+const fetchRoomExp = async (room_code, token) => {
+
+
+    console.log("URL", `${API_ENV_URL}/room/${room_code}`)
+    console.log("TOKEN", token)
+
+    const res = await fetch(`${API_ENV_URL}/room/${room_code}`, {
         headers: {
             "bearer": token
         }
     })
-    const {exp} = await res.json()
 
-    return {exp: exp, status: res.status}
+    const data = await res.json()
+
+    return {exp: new Date(data.room.expirationDate).getTime(), status: res.status}
 }
 
 const generateResponseWithCookie = (room, exp) => {
@@ -38,7 +45,7 @@ const roomsMiddleware = async (request) => {
 
 
     if(!hasToken){
-        return NextResponse.redirect(new URL(`${ENV_URL}:${process.env.NEXT_PUBLIC_WEB_PORT}/login`))
+        return NextResponse.redirect(new URL(`${WEB_ENV_URL}/login`))
     }
 
     try {
@@ -48,8 +55,8 @@ const roomsMiddleware = async (request) => {
         const { exp, status } = await fetchRoomExp(room, token)
 
         if (status === 200) {
-            if (parseInt(exp) > new Date().getTime()) {
-                return NextResponse.rewrite(new URL(`${ENV_URL}:${process.env.NEXT_PUBLIC_WEB_PORT}/expired`))
+            if (parseInt(exp) < new Date().getTime()) {
+                return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/expired`))
             }
             else{
                 return generateResponseWithCookie(room, exp)
@@ -57,16 +64,17 @@ const roomsMiddleware = async (request) => {
         }
 
         if(status === 401){
-            return NextResponse.rewrite(new URL(`${ENV_URL}:${process.env.NEXT_PUBLIC_WEB_PORT}/noroomaccess`))
+            return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/noroomaccess`))
         }
 
         if (status === 404) {
-            return NextResponse.rewrite(new URL(`${ENV_URL}:${process.env.NEXT_PUBLIC_WEB_PORT}/badcode`))
+            return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/badcode`))
         }
 
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
 
     } catch (e) {
+        console.log(e)
         return NextResponse.json({ error: 'Internal Server Error', details: e.message }, { status: 500 })
     }
 }
