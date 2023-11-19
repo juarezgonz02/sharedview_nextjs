@@ -18,7 +18,7 @@ export class RoomController{
     GetExpirationDate<code> (Public) => Date DONE
     TogglePublic<code> (Private) => void  DONE
     DeleteRoom<code> (Private) => void DONE
-    ToggleUserAccess<username> (Private) => void
+    ToggleUserAccess<username> (Private) => void DONE
     CheckStatus<code> (Public) => statusObject
     */
     @UseGuards(AuthGuard)
@@ -121,8 +121,10 @@ export class RoomController{
             const hasAccess = roomFound.accessUsers.findIndex(u => u == user as unknown as User);
 
             if(hasAccess){
+                this.logger.verbose("Adding to Room...");
                 await this.roomService.addUserToRoom(code, user);
             }else{
+                this.logger.verbose("Removing from Room...");
                 await this.roomService.deleteUserFromRoom(code, user);
             }
             
@@ -134,4 +136,47 @@ export class RoomController{
         }
     }
 
+    @Get("/status/:code")
+    async getRoomStatus(@Req() req: Request, @Res() res: Response, @Param("code") code: string,){
+        try {
+            this.logger.verbose("Fetchin Room Status...");
+            const roomFound = await this.roomService.getRoomInfo(code);
+            if(!roomFound){
+                this.logger.verbose("Room was not found");
+                return res.status(404).json({message: "Room was not found!"})
+            }
+            let today = new Date();
+            const dayDiff = roomFound.expirationDate.getTime() - today.getTime();
+            const minuteDiff = roomFound.expirationDate.getUTCMinutes() - today.getUTCMinutes();
+            if(dayDiff < 0 || (dayDiff == 0 && minuteDiff > 0)){
+                this.logger.verbose("Room Status Fetched!");
+                this.logger.verbose("Room has expired!");
+                return res.status(200).json({ status: "Expired!", message: "You cannot access the room!"});
+            }
+            this.logger.verbose("Room is available");
+            if(roomFound.isPublic){
+                this.logger.verbose("Room is public, no invitation needed!");
+                return res.status(200).json({ status: "Available!", message: "You can access the room!"});
+            }
+
+            if(!req.user){
+                this.logger.verbose("Room is available, but user is not logged in");
+                return res.status(200).json({  message: "Please log in to see accessibility!"});
+            }
+
+            const hasAccess = roomFound.accessUsers.findIndex(u => u == req.user["id"] as unknown as User);
+
+            if(hasAccess){
+                this.logger.verbose("User is in the access list!");
+                return res.status(200).json({ status: "Available!", message: "You can access the room!"});
+            }else{
+                this.logger.verbose("User is not in the access list!");
+                return res.status(200).json({ status: "Unavailable!", message: "You cannot access the room!"});
+            }
+                        
+        } catch (error) {
+            this.logger.error(error);
+            return res.status(500).json({ message: "Internal Server Error!" });
+        }
+    }
 }
