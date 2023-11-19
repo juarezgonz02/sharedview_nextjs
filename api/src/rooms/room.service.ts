@@ -41,13 +41,21 @@ export class RoomService{
         return queryResults;
     }
 
-    async toggleRoomPublicStatus(code: string, ownerId: string){
-        const room = await this.getRoomInfo(code);
-        const roomUpdated = await this.roomModel.updateOne({code:code},{ isPublic: !room.isPublic});
+    async toggleRoomPublicStatus(code: string, isPublic: boolean){
+        const roomUpdated = await this.roomModel.updateOne({code:code},{ isPublic: !isPublic});
+        this.logger.warn(roomUpdated)
     }
 
     async deleteRoom(roomCode: string){
-        const queryResults = await this.roomModel.deleteOne({ code: roomCode})
-            .exec()
+        await this.roomModel.deleteOne({ code: roomCode})
+            .exec();
+    }
+
+    async addUserToRoom(roomCode: string, userId: string){
+        const roomUpdated = await this.roomModel.updateOne({ code: roomCode}, { $push: { accessUsers: userId }});
+    }
+
+    async deleteUserFromRoom(roomCode: string, userId: string){
+        const roomUpdated = await this.roomModel.updateOne({ code: roomCode}, { $pull: { accessUsers: userId }});
     }
 }

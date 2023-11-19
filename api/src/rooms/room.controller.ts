@@ -3,6 +3,7 @@ import { CreateRoomDto } from "./models/dtos/CreateRoomDto";
 import { AuthGuard } from "src/auth/auth.guard";
 import { RoomService } from "./room.service";
 import { Request, Response } from "express";
+import { User } from "src/users/models/entities/user.schema";
 
 
 @Controller("room")
@@ -15,7 +16,7 @@ export class RoomController{
     Endpoints:
     CreateRoom<name>(Private) => Room DONE
     GetExpirationDate<code> (Public) => Date DONE
-    TogglePublic<code> (Private) => void 
+    TogglePublic<code> (Private) => void  DONE
     DeleteRoom<code> (Private) => void DONE
     ToggleUserAccess<username> (Private) => void
     CheckStatus<code> (Public) => statusObject
@@ -81,7 +82,7 @@ export class RoomController{
     @Patch("/:code")
     async togglePublicStatus(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
         try {
-            this.logger.verbose("Toggling room's publicity...");
+            this.logger.verbose("Toggling Room's Publicity...");
             const roomFound = await this.roomService.getRoomInfo(code);
             if(!roomFound){
                 this.logger.verbose("Room not found.")
@@ -92,12 +93,45 @@ export class RoomController{
                 this.logger.verbose("User is not the owner")
                 return res.status(403).json({ message: "Forbidden!" });
             };
-            await this.roomService.toggleRoomPublicStatus(code, req.user["id"])
-            this.logger.verbose("Room toggled!");
+            await this.roomService.toggleRoomPublicStatus(code, roomFound.isPublic);
+            this.logger.verbose("Room Toggled!");
             return res.status(200).json({message: "Room's privacy has been toggled!"})
         } catch (error) {
             this.logger.error(error);
             return res.status(500).json({ message: "Internal Server Error!" });
         }
     }
+
+    @UseGuards(AuthGuard)
+    @Patch("/:code/user/:identifier")
+    async toggleAccessUsers(@Req() req: Request, @Res() res: Response, @Param("code") code: string, @Param("identifier") user: string){
+        try {
+            this.logger.verbose("Toggling User Access...");
+            const roomFound = await this.roomService.getRoomInfo(code);
+            if(!roomFound){
+                this.logger.verbose("Room not found.")
+                return res.status(404).json({ message: "Room was not found!"});
+            };
+            //TODO: convert this into middleware or guard.
+            if(roomFound.owner != req.user["id"]){
+                this.logger.verbose("User is not the owner")
+                return res.status(403).json({ message: "Forbidden!" });
+            };
+            
+            const hasAccess = roomFound.accessUsers.findIndex(u => u == user as unknown as User);
+
+            if(hasAccess){
+                await this.roomService.addUserToRoom(code, user);
+            }else{
+                await this.roomService.deleteUserFromRoom(code, user);
+            }
+            
+            this.logger.verbose("User Access toggled!");
+            return res.status(200).json({ message: "Tested!"})
+        } catch (error) {
+            this.logger.error(error);
+            return res.status(500).json({ message: "Internal Server Error!" });
+        }
+    }
+
 }
