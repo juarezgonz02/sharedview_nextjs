@@ -7,6 +7,10 @@
 trigger:
 - dev
 
+pr:
+- main
+- dev
+
 pool:
   name: Default
 
