@@ -30,7 +30,7 @@ export class RoomController{
             const roomCreated = await this.roomService.createRoom(room, userId);
             this.logger.verbose(roomCreated)
             this.logger.verbose("Room created!");
-            return res.status(201).json({message: "Room has been created!"});
+            return res.status(201).json({room: roomCreated, message: "Room has been created!"});
         } catch (error) {
             this.logger.error(error);
             return res.status(500).json({ message: "Internal Server Error!" });
