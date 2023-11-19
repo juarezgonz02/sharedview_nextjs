@@ -1,24 +1,6 @@
 
   @import url('/imageshttps://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-  body {
-    font-family: 'Open Sans', sans-serif;
-  }
-  body{
-    color: white;
-    background-color:#121212;
 
-  }  
-  @media screen and (max-width: 1200px) {
-    #root{
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      margin: 2em;
-      margin-bottom: 0em;
-      width: calc(100vw-100px);
-      height: calc(100vh-2em);
-    }
-  }
   #root{
     display: flex;
     flex-direction: row;
@@ -28,6 +10,7 @@
     width: calc(100vw-100px);
     height: calc(100vh-2em);
   }
+  
   .main-container{
     width: auto;
     height: 90vh;
