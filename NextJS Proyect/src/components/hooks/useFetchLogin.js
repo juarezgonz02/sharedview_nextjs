@@ -1,11 +1,14 @@
 
 // Asynchronous function to make a POST request to login API
+const ENV_URL = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_API_HOST}`
+
 const callLoginApi = async (data) => {
     try {
-        const response = await fetch("http://localhost:3000/auth/login", {
+        const response = await fetch(`${ENV_URL}:${process.env.NEXT_PUBLIC_API_PORT}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
+            credentials: "include"
         });
 
         return response;
@@ -19,7 +22,7 @@ const handleLoginResponse = async (response, router, onSuccess, onError) => {
     if (response.status === 200) {
         // If the response status is 200 (OK), redirect the user to the home page using the router
         onSuccess("Logged in successfully");
-        router.push("/home");
+        router.push("/");
     } else if(response.status === 404) {
         // If the response status is 401 (Unauthorized), show an error message
         onError("User not found");
