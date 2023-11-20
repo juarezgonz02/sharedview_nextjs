@@ -29,4 +29,8 @@ export class UserService{
         const userFound = await this.userModel.findOne({ $or: [{username: identifier}, { email: identifier}] }).exec();
         return userFound;
     }
+
+    async deleteUserByIdentifier(identifier: string){
+        await this.userModel.deleteOne({ $or: [{_id: identifier}, { username: identifier}, {email: identifier}]});
+    }
 }
