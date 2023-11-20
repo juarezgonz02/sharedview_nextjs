@@ -41,6 +41,14 @@ export class RoomService{
         return queryResults;
     }
 
+    async getRoomsByOwner(ownerId: string){
+        const queryResults = await this.roomModel.find({owner: ownerId})
+            .select("-createdAt -updatedAt -__v")
+            .populate("accessUsers")
+            .exec()
+        return queryResults;
+    }
+
     async toggleRoomPublicStatus(code: string, isPublic: boolean){
         const roomUpdated = await this.roomModel.updateOne({code:code},{ isPublic: !isPublic});
         this.logger.warn(roomUpdated)

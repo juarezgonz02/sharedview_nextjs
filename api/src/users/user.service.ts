@@ -26,7 +26,7 @@ export class UserService{
     }
 
     async findUserByIdentifier(identifier: string){
-        const userFound = await this.userModel.findOne({ $or: [{username: identifier}, { email: identifier}] }).exec();
+        const userFound = await this.userModel.findOne({ $or: [{_id: identifier},{username: identifier}, { email: identifier}] }).exec();
         return userFound;
     }
 
