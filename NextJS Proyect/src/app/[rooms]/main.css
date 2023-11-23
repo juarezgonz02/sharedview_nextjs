@@ -1,26 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-@media screen and (max-width: 1200px) {
-    #root{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        margin: 2em;
-        margin-bottom: 0em;
-        width: calc(100vw-100px);
-        height: calc(100vh-2em);
-    }
-}
-#root{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 2em;
-    margin-bottom: 0em;
-    width: calc(100vw-100px);
-    height: calc(100vh-2em);
-}
 .main-container{
     width: auto;
     height: 90vh;

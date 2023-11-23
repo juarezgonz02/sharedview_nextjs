@@ -16,7 +16,7 @@ const Page = () => {
                                 Login
                             </span>
                             <span className="text-base phone:text-sm">
-                                Doesn't have an account?{" "}
+                                Doesn`&apos;`t have an account?{""}
                                 <a
                                     href="/registration"
                                     className="text-purple underline hover:text-fuchsia-600"
