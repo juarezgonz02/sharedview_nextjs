@@ -8,8 +8,6 @@ config()
 
 const publish = new NodeMediaServer(publish_config)
 const relay1 = new NodeMediaServer(pull_config_0)
-const relay2 = new NodeMediaServer(pull_config_1)
-const relay3 = new NodeMediaServer(pull_config_2)
 
 //TODO: FETCH API FOR CODE 
  
@@ -22,10 +20,19 @@ const consult_api_for_room = async (streamPath) => {
 
   const res = await fetch(`${API_ENV_URL}/room/${stream}`)
   
-  if(res.status == 200){
-    return true
-  }else {
+  
+  if(res.status !== 200){
     return false
+  } 
+
+  if(res.status == 200){
+    const {expirationDate} = await res.json()
+    
+    const expD = new Date(expirationDate).getTime()
+    
+    const now = Date.now()
+    
+    return expD > now
   }
 
 }
@@ -71,13 +78,6 @@ relay1.on('prePublish', async(id, StreamPath, args) => { prePublishCallback(publ
 relay1.on('prePlay', prePlayCallback);
 relay1.run();
 
-relay2.on('prePublish', async(id, StreamPath, args) => { prePublishCallback(publish, id, StreamPath, args ) } );
-relay2.on('prePlay', prePlayCallback);
-relay2.run();
-
-relay3.on('prePublish', async(id, StreamPath, args) => { prePublishCallback(relay3, id, StreamPath, args ) } );
-relay3.on('prePlay', prePlayCallback);
-relay3.run();
 
 
 
