@@ -1,25 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import { Button, Input, Form, Select, ConfigProvider } from "antd";
-
-const onFinish = (formRef) => (values) => {
-    console.log("Success:", values);
-    formRef.current?.resetFields();
-};
-
-const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-};
+import React from "react";
+import { Button, Input, Form, ConfigProvider } from "antd";
+import toast, { Toaster } from "react-hot-toast";
 
 
-const CreateRoomForm = ({ handleOk, handleCancel }) => {
-    const [state, setState] = useState("public");
-
-    const onChangeState = (value) => {
-        setState(value);
-    };
-
+const CreateRoomForm = ({ handleOk, handleCancel, createRooms}) => {
     const formRef = React.useRef(null);
+    const onSuccess = (message) => toast.success(message);
+    const onError = (message) => toast.error(message);
+
+    const onFinish = (values) => {
+        createRooms(onSuccess, onError, values);
+        formRef.current.resetFields();
+    };
 
     return (
         <ConfigProvider
@@ -60,8 +53,7 @@ const CreateRoomForm = ({ handleOk, handleCancel }) => {
                 name="basic"
                 layout="vertical"
                 ref={formRef}
-                onFinish={onFinish(formRef)}
-                onFinishFailed={onFinishFailed(formRef)}
+                onFinish={onFinish}
                 autoComplete="off"
                 style={{
                     marginTop: "20px",
@@ -78,25 +70,6 @@ const CreateRoomForm = ({ handleOk, handleCancel }) => {
                     ]}
                 >
                     <Input placeholder="Ingrese el nombre" />
-                </Form.Item>
-                <Form.Item
-                    label="Estado de la sala"
-                    name="state"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Seleccione un estado!",
-                        },
-                    ]}
-                >
-                    <Select
-                        placeholder="Seleccione un estado"
-                        onChange={onChangeState}
-                        value={state}
-                    >
-                        <Select.Option value="public">Publica</Select.Option>
-                        <Select.Option value="private">Privada</Select.Option>
-                    </Select>
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -126,11 +99,17 @@ const CreateRoomForm = ({ handleOk, handleCancel }) => {
                             padding: "0 20px",
                             borderColor: "#7f19b4",
                         }}
+                        onClick={() =>
+                            setTimeout(() => {
+                                handleOk(formRef);
+                            }, 1000)
+                        }
                     >
                         Crear
                     </Button>
                 </Form.Item>
             </Form>
+            <Toaster />
         </ConfigProvider>
     );
 };
