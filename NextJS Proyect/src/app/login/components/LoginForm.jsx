@@ -3,8 +3,8 @@ import React from "react";
 import { Form, Input, Button, ConfigProvider } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import { useFetchLogin } from "./hooks/useFetchLogin.js";
-import toast, { Toaster } from 'react-hot-toast';
+import { useFetchLogin } from "../libs/useFetchLogin.js";
+import toast, { Toaster } from "react-hot-toast";
 
 const onFinish = (router, onSuccess, onError) => (values) => {
     useFetchLogin(values, router, onSuccess, onError);

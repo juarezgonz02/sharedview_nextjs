@@ -1,25 +1,27 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import LoginBannerIMG from '../../public/Voice chat-bro.png';
-import { VideoCameraAddOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Button, Input, ConfigProvider, Tooltip, Modal } from 'antd';
-import CreateRoomForm from './CreateRoomForm';
-import RoomsList from './RoomsList';
+import React from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import LoginBannerIMG from "../../../../public/Voice chat-bro.png";
+import { VideoCameraAddOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Input, ConfigProvider, Tooltip, Modal } from "antd";
+import CreateRoomForm from "./CreateRoomForm";
+import RoomsList from "./RoomsList";
 
 const Header = () => {
     return (
         <div className="flex flex-col gap-2 tablet:items-center tablet:justify-center">
             <div className="text-white phone:text-start">
-                <span className="text-purple text-4xl font-bold tablet:text-3xl">Shared</span>
+                <span className="text-purple text-4xl font-bold tablet:text-3xl">
+                    Shared
+                </span>
                 <span className="text-4xl font-bold tablet:text-3xl">View</span>
             </div>
             <p className="text-base text-gray-400 tablet:text-sm phone:text-center">
                 Crea una sala y comparte el codigo con tus amigos
             </p>
         </div>
-    )
-}
+    );
+};
 
 const Controls = ({ isModalOpen, setIsModalOpen, createRoom }) => {
     const [button, setButton] = useState(false);
@@ -74,7 +76,12 @@ const Controls = ({ isModalOpen, setIsModalOpen, createRoom }) => {
                 >
                     Crear sala
                 </Button>
-                <Modal title="Crear una sala" open={isModalOpen} footer={null} closeIcon={false}>
+                <Modal
+                    title="Crear una sala"
+                    open={isModalOpen}
+                    footer={null}
+                    closeIcon={false}
+                >
                     <CreateRoomForm handleOk={handleOk} handleCancel={handleCancel} />
                 </Modal>
             </ConfigProvider>
@@ -115,15 +122,20 @@ const Controls = ({ isModalOpen, setIsModalOpen, createRoom }) => {
                 </ConfigProvider>
             </div>
         </div>
-    )
-}
-
+    );
+};
 
 const ImageHome = () => {
     return (
-        <Image src={LoginBannerIMG} width={500} height={500} alt="img" className="phone:h-60 phone:w-60" />
-    )
-}
+        <Image
+            src={LoginBannerIMG}
+            width={500}
+            height={500}
+            alt="img"
+            className="phone:h-60 phone:w-60"
+        />
+    );
+};
 
 const Rooms = ({ rooms }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -133,21 +145,29 @@ const Rooms = ({ rooms }) => {
         if (rooms.length >= 3) {
             setCreateRoom(true);
         }
-    }, [rooms])
+    }, [rooms]);
 
     return (
         <>
-            <Controls isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} createRoom={createRoom} />
-            <RoomsList rooms={rooms} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
+            <Controls
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                createRoom={createRoom}
+            />
+            <RoomsList
+                rooms={rooms}
+                setIsModalOpen={setIsModalOpen}
+                isModalOpen={isModalOpen}
+            />
         </>
-    )
-}
+    );
+};
 
-const HomeView = ({rooms}) => {
+const HomeView = ({ rooms }) => {
     return (
         <div className="flex flex-row items-center justify-evenly px-8 w-full phone:flex-col-reverse phone:justify-center">
             <div className="w-1/2 flex flex-col gap-8 tablet:w-full">
-                <Header  />
+                <Header />
                 <Rooms rooms={rooms} />
             </div>
             <div className="flex flex-col">
@@ -155,6 +175,6 @@ const HomeView = ({rooms}) => {
             </div>
         </div>
     );
-}
+};
 
 export default HomeView;

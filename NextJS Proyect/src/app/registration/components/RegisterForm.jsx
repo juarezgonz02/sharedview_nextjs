@@ -1,8 +1,8 @@
-'use client';
-import { Form, Input, Button, ConfigProvider } from 'antd';
-import { useFetchRegister } from './hooks/useFetchRegister.js';
+"use client";
+import { Form, Input, Button, ConfigProvider } from "antd";
+import { useFetchRegister } from "../libs/useFetchRegister.js";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 const onFinish = (router, onSuccess, onError) => (values) => {
     useFetchRegister(values, router, onSuccess, onError);
@@ -63,7 +63,7 @@ const RegisterForm = () => {
                     remember: true,
                 }}
                 onFinish={onFinish(router, onSuccess, onError)}
-                layout='vertical'
+                layout="vertical"
                 style={{
                     width: "100%",
                 }}
@@ -74,7 +74,7 @@ const RegisterForm = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your name!',
+                            message: "Please input your name!",
                         },
                     ]}
                 >
@@ -86,7 +86,7 @@ const RegisterForm = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: "Please input your Username!",
                         },
                     ]}
                 >
@@ -98,7 +98,7 @@ const RegisterForm = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your email!',
+                            message: "Please input your email!",
                         },
                     ]}
                 >
@@ -110,14 +110,11 @@ const RegisterForm = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Password!',
+                            message: "Please input your Password!",
                         },
                     ]}
                 >
-                    <Input.Password
-                        type="password"
-                        placeholder="Input your password"
-                    />
+                    <Input.Password type="password" placeholder="Input your password" />
                 </Form.Item>
                 <Form.Item>
                     <Button
@@ -130,7 +127,7 @@ const RegisterForm = () => {
                             width: "100%",
                             marginTop: "10px",
                         }}
-                        className='hover:bg-purple-600'
+                        className="hover:bg-purple-600"
                     >
                         Register
                     </Button>
@@ -139,6 +136,6 @@ const RegisterForm = () => {
             <Toaster />
         </ConfigProvider>
     );
-}
+};
 
 export default RegisterForm;
