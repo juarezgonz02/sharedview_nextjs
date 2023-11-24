@@ -2,7 +2,6 @@
 import HomeView from "@/app/home/components/HomeView";
 import React from "react";
 import Navbar from "@/components/Navbar";
-import { useState } from "react";
 
 const Page = () => {
 

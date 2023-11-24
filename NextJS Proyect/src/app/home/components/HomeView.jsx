@@ -145,7 +145,7 @@ const Rooms = () => {
     const [stateButton, setStateButton] = useState(false);
     const [rooms, setRooms] = useState([]);
 
-    const createRooms = async (onSuccess, onError, values) => {
+    const createRooms = async (values, onSuccess, onError) => {
         await useFetchCreateRoom(values, onSuccess, onError);
         getRooms();
     }
@@ -183,6 +183,7 @@ const Rooms = () => {
             <RoomsList
                 rooms={rooms}
                 deleteRoom={deleteRoom}
+                getRooms={getRooms}
             />
         </>
     );

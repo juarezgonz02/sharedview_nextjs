@@ -58,7 +58,7 @@ const RegisterForm = () => {
             }}
         >
             <Form
-                name="normal_login"
+                name="register"
                 initialValues={{
                     remember: true,
                 }}

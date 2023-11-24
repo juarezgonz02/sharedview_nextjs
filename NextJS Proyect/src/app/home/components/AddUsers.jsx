@@ -1,20 +1,22 @@
-"use client";
 import React from "react";
 import { Button, Input, Form, ConfigProvider } from "antd";
 import toast, { Toaster } from "react-hot-toast";
+import { useFetchAddUser } from "../libs/useFetchAddUser";
 
-const CreateRoomForm = ({ handleOk, handleCancel, createRooms }) => {
-    const formRef = React.useRef(null);
+const onFinish = (onSuccess, onError, code, handleAddUserOk, formRef, getRooms) => (values) => {
+    useFetchAddUser(values, code, onSuccess, onError);
+    setTimeout(() => {
+        handleAddUserOk();
+    }, 2000);
+    getRooms();
+    formRef.current.resetFields();
+}
+
+const AddUsers = ({code, handleAddUserOk, handleAddUserCancel, getRooms}) => {
+
+    const addformRef = React.useRef(null);
     const onSuccess = (message) => toast.success(message);
     const onError = (message) => toast.error(message);
-
-    const onFinish = (values) => {
-        createRooms(values, onSuccess, onError);
-        setTimeout(() => {
-            handleOk();
-        }, 2000);
-        formRef.current.resetFields();
-    };
 
     return (
         <ConfigProvider
@@ -52,26 +54,26 @@ const CreateRoomForm = ({ handleOk, handleCancel, createRooms }) => {
             }}
         >
             <Form
-                name="createRoom"
+                name="addUsers"
+                ref={addformRef}
                 layout="vertical"
-                ref={formRef}
-                onFinish={onFinish}
+                onFinish={onFinish(onSuccess, onError, code, handleAddUserOk, addformRef, getRooms)}
                 autoComplete="off"
                 style={{
                     marginTop: "20px",
                 }}
             >
                 <Form.Item
-                    label="Nombre de la sala"
-                    name="name"
+                    label="Agregar usuarios a la sala"
+                    name="username"
                     rules={[
                         {
                             required: true,
-                            message: "Ingrese el nombre de la sala!",
+                            message: "Por favor, ingrese el nombre del usuario",
                         },
                     ]}
                 >
-                    <Input placeholder="Ingrese el nombre" />
+                    <Input placeholder="Ingrese el nombre del usuario" />
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -88,7 +90,7 @@ const CreateRoomForm = ({ handleOk, handleCancel, createRooms }) => {
                             borderColor: "#7f19b4",
                             color: "#fff",
                         }}
-                        onClick={() => handleCancel(formRef)}
+                        onClick={() => handleAddUserCancel(addformRef)}
                     >
                         Cancelar
                     </Button>
@@ -102,13 +104,13 @@ const CreateRoomForm = ({ handleOk, handleCancel, createRooms }) => {
                             borderColor: "#7f19b4",
                         }}
                     >
-                        Crear
+                        Agregar
                     </Button>
                 </Form.Item>
             </Form>
             <Toaster />
         </ConfigProvider>
-    );
-};
+    )
+}
 
-export default CreateRoomForm;
+export default AddUsers
