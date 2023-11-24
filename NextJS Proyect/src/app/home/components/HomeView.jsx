@@ -1,7 +1,8 @@
-import React from "react";
+import React,  { useRef } from "react";
 import { useEffect, useState } from "react";
 import { VideoCameraAddOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Input, ConfigProvider, Tooltip, Modal } from "antd";
+import { useRouter } from "next/navigation";
 import { useFetchRooms } from "../libs/useFetchRooms";
 import { useFetchDeleteRoom } from "../libs/useFetchDeleteRoom";
 import { useFetchCreateRoom } from "../libs/useFetchCreateRoom";
@@ -28,6 +29,9 @@ const Header = () => {
 
 const Controls = ({ isModalOpen, setIsModalOpen, stateButton, createRooms }) => {
     const [button, setButton] = useState(false);
+    const router = useRouter();
+    const inputRef = useRef(); 
+    
 
     const onChange = (e) => {
         if (e.target.value === "") {
@@ -49,6 +53,12 @@ const Controls = ({ isModalOpen, setIsModalOpen, stateButton, createRooms }) => 
         formRef.current?.resetFields();
         setIsModalOpen(false);
     };
+
+    const goToRoom = () => {
+        const inputValue = inputRef.current.input.value;  
+        router.push(`/${inputValue}`);
+    }
+
 
     return (
         <div className="flex flex-wrap-reverse gap-4 tablet:flex-row tablet:items-center tablet:justify-center">
@@ -104,9 +114,11 @@ const Controls = ({ isModalOpen, setIsModalOpen, stateButton, createRooms }) => 
                     }}
                 >
                     <Input
+                        name="code"
                         size="large"
                         placeholder="Ingresa el codigo de la reunion"
                         onChange={onChange}
+                        ref={inputRef}
                         allowClear
                         suffix={
                             <Tooltip title="Example: xac-1a3-vds">
@@ -118,8 +130,9 @@ const Controls = ({ isModalOpen, setIsModalOpen, stateButton, createRooms }) => 
                             </Tooltip>
                         }
                     />
-
-                    <Button type="text" size="large" disabled={!button}>
+                    <Button type="text" size="large" disabled={!button}
+                        onClick={goToRoom}
+                    >
                         Unirse
                     </Button>
                 </ConfigProvider>
