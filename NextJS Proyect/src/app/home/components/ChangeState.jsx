@@ -1,25 +1,20 @@
-"use client";
-import React, { useState } from "react";
-import { Button, Input, Form, Select, ConfigProvider } from "antd";
+import React from "react";
+import { Button, Select, Form, ConfigProvider } from "antd";
+import toast, { Toaster } from "react-hot-toast";
+import { useFetchChangeState } from "../libs/useFetchChangeState";
 
-const onFinish = (formRef) => (values) => {
-    console.log("Success:", values);
-    formRef.current?.resetFields();
-};
+const onFinish = (onSuccess, onError, code, handleStateOk, getRooms) => (values) => {
+    useFetchChangeState(values, code, onSuccess, onError);
+    setTimeout(() => {
+        handleStateOk();
+        getRooms();
+    }, 2000);
+}
 
-const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-};
-
-
-const CreateRoomForm = ({ handleOk, handleCancel }) => {
-    const [state, setState] = useState("public");
-
-    const onChangeState = (value) => {
-        setState(value);
-    };
-
-    const formRef = React.useRef(null);
+const ChangeState = ({ handleStateOk, handleStateCancel, code, state, getRooms}) => {
+    const onSuccess = (message) => toast.success(message);
+    const onError = (message) => toast.error(message);
+    console.log(state)
 
     return (
         <ConfigProvider
@@ -57,46 +52,42 @@ const CreateRoomForm = ({ handleOk, handleCancel }) => {
             }}
         >
             <Form
-                name="basic"
+                name="changeState"
                 layout="vertical"
-                ref={formRef}
-                onFinish={onFinish(formRef)}
-                onFinishFailed={onFinishFailed(formRef)}
+                onFinish={onFinish(onSuccess, onError, code, handleStateOk, getRooms)}
                 autoComplete="off"
                 style={{
                     marginTop: "20px",
                 }}
             >
                 <Form.Item
-                    label="Nombre de la sala"
-                    name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: "Ingrese el nombre de la sala!",
-                        },
-                    ]}
-                >
-                    <Input placeholder="Ingrese el nombre" />
-                </Form.Item>
-                <Form.Item
-                    label="Estado de la sala"
+                    label="Cambiar el estado de la sala"
                     name="state"
+                    initialValue={
+                        state === true ? "Publica" : "Privada"
+                    }
                     rules={[
                         {
                             required: true,
-                            message: "Seleccione un estado!",
+                            message: "Por favor, ingrese el estado de la sala",
                         },
                     ]}
                 >
                     <Select
-                        placeholder="Seleccione un estado"
-                        onChange={onChangeState}
-                        value={state}
-                    >
-                        <Select.Option value="public">Publica</Select.Option>
-                        <Select.Option value="private">Privada</Select.Option>
-                    </Select>
+                        style={{
+                            width: '100%',
+                        }}
+                        options={[
+                            {
+                                value: true,
+                                label: 'Publica',
+                            },    
+                            {
+                                value: false,
+                                label: 'Privada',
+                            },                     
+                        ]}
+                    />
                 </Form.Item>
                 <Form.Item
                     style={{
@@ -113,7 +104,7 @@ const CreateRoomForm = ({ handleOk, handleCancel }) => {
                             borderColor: "#7f19b4",
                             color: "#fff",
                         }}
-                        onClick={() => handleCancel(formRef)}
+                        onClick={() => handleStateCancel()}
                     >
                         Cancelar
                     </Button>
@@ -127,12 +118,13 @@ const CreateRoomForm = ({ handleOk, handleCancel }) => {
                             borderColor: "#7f19b4",
                         }}
                     >
-                        Crear
+                        Cambiar
                     </Button>
                 </Form.Item>
             </Form>
+            <Toaster />
         </ConfigProvider>
     );
 };
 
-export default CreateRoomForm;
+export default ChangeState;

@@ -1,14 +1,16 @@
-'use client';
-import { Form, Input, Button, ConfigProvider } from 'antd';
-import { useFetchRegister } from './hooks/useFetchRegister.js';
+"use client";
+import React from "react";
+import { Form, Input, Button, ConfigProvider } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from 'react-hot-toast';
+import { useFetchLogin } from "../libs/useFetchLogin.js";
+import toast, { Toaster } from "react-hot-toast";
 
 const onFinish = (router, onSuccess, onError) => (values) => {
-    useFetchRegister(values, router, onSuccess, onError);
+    useFetchLogin(values, router, onSuccess, onError);
 };
 
-const RegisterForm = () => {
+const LoginForm = () => {
     const router = useRouter();
     const onSuccess = (message) => toast.success(message);
     const onError = (message) => toast.error(message);
@@ -31,8 +33,6 @@ const RegisterForm = () => {
                     },
                     Form: {
                         labelColor: "#fff",
-                        labelRequiredMarkColor: "#7f19b4",
-                        colorError: "#a233d1",
                     },
                     Input: {
                         colorBgContainer: "#1e1e1e",
@@ -41,7 +41,6 @@ const RegisterForm = () => {
                         colorTextPlaceholder: "rgba(255, 255, 255, 0.4)",
                         activeBorderColor: "#fff",
                         hoverBorderColor: "#fff",
-                        colorError: "#fff",
                     },
                     Select: {
                         colorBorder: "#1e1e1e",
@@ -63,46 +62,22 @@ const RegisterForm = () => {
                     remember: true,
                 }}
                 onFinish={onFinish(router, onSuccess, onError)}
-                layout='vertical'
-                style={{
-                    width: "100%",
-                }}
+                layout="vertical"
             >
                 <Form.Item
-                    label="Name"
-                    name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your name!',
-                        },
-                    ]}
-                >
-                    <Input placeholder="Input your name" />
-                </Form.Item>
-                <Form.Item
                     label="Username"
-                    name="username"
+                    name="identifier"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: "Please input your Username!",
                         },
                     ]}
                 >
-                    <Input placeholder="Input your username" />
-                </Form.Item>
-                <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your email!',
-                        },
-                    ]}
-                >
-                    <Input placeholder="Input your email" />
+                    <Input
+                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        placeholder="Input your username"
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Password"
@@ -110,35 +85,36 @@ const RegisterForm = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Password!',
+                            message: "Please input your Password!",
                         },
                     ]}
                 >
-                    <Input.Password
+                    <Input
+                        prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
                         placeholder="Input your password"
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Button
-                        type="default"
-                        htmlType="submit"
-                        style={{
-                            backgroundColor: "#7f19b4",
-                            color: "#fff",
-                            borderColor: "#7f19b4",
-                            width: "100%",
-                            marginTop: "10px",
-                        }}
-                        className='hover:bg-purple-600'
-                    >
-                        Register
-                    </Button>
+                    <div className="flex flex-col items-center justify-between text-white gap-2">
+                        <Button
+                            type="default"
+                            htmlType="submit"
+                            style={{
+                                backgroundColor: "#7f19b4",
+                                color: "#fff",
+                                borderColor: "#7f19b4",
+                                width: "100%",
+                            }}
+                        >
+                            Log in
+                        </Button>
+                    </div>
                 </Form.Item>
             </Form>
             <Toaster />
         </ConfigProvider>
     );
-}
+};
 
-export default RegisterForm;
+export default LoginForm;

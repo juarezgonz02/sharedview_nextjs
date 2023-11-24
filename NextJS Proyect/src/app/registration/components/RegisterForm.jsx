@@ -1,16 +1,14 @@
 "use client";
-import React from "react";
 import { Form, Input, Button, ConfigProvider } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useFetchRegister } from "../libs/useFetchRegister.js";
 import { useRouter } from "next/navigation";
-import { useFetchLogin } from "./hooks/useFetchLogin.js";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 const onFinish = (router, onSuccess, onError) => (values) => {
-    useFetchLogin(values, router, onSuccess, onError);
+    useFetchRegister(values, router, onSuccess, onError);
 };
 
-const LoginForm = () => {
+const RegisterForm = () => {
     const router = useRouter();
     const onSuccess = (message) => toast.success(message);
     const onError = (message) => toast.error(message);
@@ -33,6 +31,8 @@ const LoginForm = () => {
                     },
                     Form: {
                         labelColor: "#fff",
+                        labelRequiredMarkColor: "#7f19b4",
+                        colorError: "#a233d1",
                     },
                     Input: {
                         colorBgContainer: "#1e1e1e",
@@ -41,6 +41,7 @@ const LoginForm = () => {
                         colorTextPlaceholder: "rgba(255, 255, 255, 0.4)",
                         activeBorderColor: "#fff",
                         hoverBorderColor: "#fff",
+                        colorError: "#fff",
                     },
                     Select: {
                         colorBorder: "#1e1e1e",
@@ -57,16 +58,31 @@ const LoginForm = () => {
             }}
         >
             <Form
-                name="normal_login"
+                name="register"
                 initialValues={{
                     remember: true,
                 }}
                 onFinish={onFinish(router, onSuccess, onError)}
                 layout="vertical"
+                style={{
+                    width: "100%",
+                }}
             >
                 <Form.Item
+                    label="Name"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your name!",
+                        },
+                    ]}
+                >
+                    <Input placeholder="Input your name" />
+                </Form.Item>
+                <Form.Item
                     label="Username"
-                    name="identifier"
+                    name="username"
                     rules={[
                         {
                             required: true,
@@ -74,10 +90,19 @@ const LoginForm = () => {
                         },
                     ]}
                 >
-                    <Input
-                        prefix={<UserOutlined className="site-form-item-icon" />}
-                        placeholder="Input your username"
-                    />
+                    <Input placeholder="Input your username" />
+                </Form.Item>
+                <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your email!",
+                        },
+                    ]}
+                >
+                    <Input placeholder="Input your email" />
                 </Form.Item>
                 <Form.Item
                     label="Password"
@@ -89,27 +114,23 @@ const LoginForm = () => {
                         },
                     ]}
                 >
-                    <Input
-                        prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="password"
-                        placeholder="Input your password"
-                    />
+                    <Input.Password type="password" placeholder="Input your password" />
                 </Form.Item>
                 <Form.Item>
-                    <div className="flex flex-col items-center justify-between text-white gap-2">
-                        <Button
-                            type="default"
-                            htmlType="submit"
-                            style={{
-                                backgroundColor: "#7f19b4",
-                                color: "#fff",
-                                borderColor: "#7f19b4",
-                                width: "100%",
-                            }}
-                        >
-                            Log in
-                        </Button>
-                    </div>
+                    <Button
+                        type="default"
+                        htmlType="submit"
+                        style={{
+                            backgroundColor: "#7f19b4",
+                            color: "#fff",
+                            borderColor: "#7f19b4",
+                            width: "100%",
+                            marginTop: "10px",
+                        }}
+                        className="hover:bg-purple-600"
+                    >
+                        Register
+                    </Button>
                 </Form.Item>
             </Form>
             <Toaster />
@@ -117,4 +138,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
