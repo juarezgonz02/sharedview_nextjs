@@ -19,13 +19,17 @@ const fetchRoomExp = async (room_code, token) => {
 
     const data = await res.json()
 
-    if(res.status == 200){
-
-        return {exp: new Date(data.room.expirationDate).getTime(), status: res.status}
-    }else {
-        return {exp: 0, status: res.status}
+    if(res.status !== 200) {
+        return {exp: 0, status: res.status, isPublic: false}
 
     }
+
+    return {
+        exp: new Date(data.room.expirationDate).getTime(),
+        status: res.status,
+        isPublic: data.room.isPublic
+    }
+
 
 }
 
@@ -62,12 +66,10 @@ const roomsMiddleware = async (request) => {
         const { exp, status } = await fetchRoomExp(room, token)
 
         if (status === 200) {
-            if (parseInt(exp) < new Date().getTime()) {
-                return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/expired`))
-            }
-            else{
-                return generateResponseWithCookie(room, exp)
-            }
+
+                        
+
+
         }
 
         if(status === 401){

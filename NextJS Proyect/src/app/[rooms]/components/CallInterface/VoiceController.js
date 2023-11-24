@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {socketContext} from "@/app/[rooms]/components/socketContext";
 
-const VoiceController = () => {
+const VoiceController = ({username}) => {
 
     const [muted, setMute] = useState(false)
     const { media, channelReady } = useContext(socketContext)
@@ -22,7 +22,8 @@ const VoiceController = () => {
 
 
     return (
-        <div className="controler-container">
+        <div className="controler-box">
+            <div className="controler-container">
             {
                 muted == null && <div onClick={switchMute} className="controler_waiting border border-warning" id="controler"></div>
 
@@ -35,6 +36,8 @@ const VoiceController = () => {
 
                 !muted && <div  onClick={switchMute} className="controler_closed" id="controler"></div>
             }
+            </div>
+            <span> {username} </span>
         </div>
     );
 };

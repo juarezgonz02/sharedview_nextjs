@@ -26,63 +26,75 @@ const SocketContext = ({room, children}) => {
 
     const messagesState = useState([])
 
-    const [messagesVals, setMessages] = messagesState
+    const [messagesVars, setMessages] = messagesState
 
     const messages = useRef([])
 
-    useEffect(() => {
+    const newPeerHandler = (data)=>{
 
-        const socket_url = `${process.env.NEXT_PUBLIC_MEDIA_PROTOCOL}://${process.env.NEXT_PUBLIC_MEDIA_HOST}:${process.env.NEXT_PUBLIC_MEDIA_PORT}`
+        console.log("know", data.userId)
 
-        socket = io(socket_url, {
-            path: "/io/socket.io"
+        const newPeerCall = peer.current.call(data.userId, mediaRef.current, {
+            metadata: {
+                username: username,
+                socketId: socket.id
+            }
         })
 
-        console.log("Try connection", socket_url)
+        newPeerCall.on('stream', function(stream) {
+            // `stream` is the MediaStream of the remote peer.
+            // Here you'd add it to an HTML video/canvas element.
+            usersRef.current.set(data.userId, {id: data.userId, socketId: data.socketId, username: data.username, media: stream, isMe: false})
+            setUsersList([...usersList, data.userId])
 
-        socket.on("connect", ()=>{
-            console.log("Server Connected ")
+            //usersRef.current.get(data.userId).media.current.srcObject = stream
 
-            setChannelStatus(true)
+        });
 
-            socket.on("new-peer", (data)=>{
+        socket.emit("received", {toSocketId: data.socketId, myUserId: id})
 
-                console.log("know", data.userId)
 
-                const newPeerCall = peer.current.call(data.userId, mediaRef.current, {
-                    metadata: {
-                        username: username
-                    }
-                })
+    }
 
-                newPeerCall.on('stream', function(stream) {
-                    // `stream` is the MediaStream of the remote peer.
-                    // Here you'd add it to an HTML video/canvas element.
-                    usersRef.current.set(data.userId, {id: data.userId, username: data.username, media: stream, isMe: false})
-                    setUsersList([...usersList, data.userId])
+    const incomingMessageHandler = (data)=>{
 
-                    //usersRef.current.get(data.userId).media.current.srcObject = stream
+        console.log("NEW MESSAGE", data)
+        messages.current = [...messages.current, data]
+        setMessages(messages.current)
 
-                });
+    }
+    const deleteUserBySocketId = (socketId) => {
+        let user_to_delete;
 
-                socket.emit("received", {toSocketId: data.socketId, myUserId: id})
-            })
+        usersRef.current.forEach((value, key)=>{
+           if(value.socketId === socketId){
+               console.log("Deleting...", key)
+               usersRef.current.delete(key)
+               setUsersList(usersRef.current)
+           }
         })
+    }
 
+    const handleUserDisconnected = (socketId) => {
+        console.log("USER DISCONECTED", socketId)
+        deleteUserBySocketId(socketId)
+    }
 
-        socket.on("incoming-message", (data)=>{
-            console.log("NEW MESSAGE", data)
-            messages.current = [...messages.current, data]
-            setMessages(messages.current)
+    const socketConnectionHandler = ()=>{
+        console.log("Server Connected ")
 
-        })
+        setChannelStatus(true)
+
+        socket.on("new-peer", newPeerHandler)
+
+        socket.on("incoming-message", incomingMessageHandler)
 
         socket.on("error", ()=>{
             console.log("Server Not found ")
-
         })
 
-    }, []);
+        socket.on("user-disconnected", handleUserDisconnected)
+    }
 
     const gotStream = (stream) => {
         stream.getAudioTracks()[0].enabled = false
@@ -105,7 +117,33 @@ const SocketContext = ({room, children}) => {
     }
 
     const getUserId = () =>{
-        peer.current = new Peer( { debug: 1 })
+        peer.current = new Peer()
+    }
+
+    const incomingCallHandler = (call) => {
+
+        call.answer(mediaRef.current);
+
+        call.on('stream', (stream) => {
+
+            usersRef.current.set(call.peer,
+                {
+                    id: call.peer,
+                    username: call.metadata.username,
+                    socketId: call.metadata.socketId,
+                    media: stream,
+                    isMe: false
+                })
+
+            setUsersList([...usersList, call.peer])
+        });
+
+        call.on("close", ()=>{
+
+            usersRef.current.delete(call.peer)
+
+            setUsersList([...usersList, call.peer])
+        })
     }
 
     const sendPeerOfferToOthers = (id) => {
@@ -132,31 +170,28 @@ const SocketContext = ({room, children}) => {
 
             console.log('My peer ID is: ' + id);
 
-            peer.current.on('call', (call) => {
-
-                call.answer(mediaRef.current);
-
-                call.on('stream', (stream) => {
-
-                    usersRef.current.set(call.peer, {id: call.peer, username: call.metadata.username, media: stream, isMe: false})
-
-                    setUsersList([...usersList, call.peer])
-                });
-
-                call.on("close", ()=>{
-
-                    usersRef.current.delete(call.peer)
-
-                    setUsersList([...usersList, call.peer])
-                })
-            });
-
+            peer.current.on('call', incomingCallHandler);
 
             sendPeerOfferToOthers(newId)
 
-
         });
     };
+
+
+    useEffect(() => {
+
+        const socket_url = `${process.env.NEXT_PUBLIC_MEDIA_PROTOCOL}://${process.env.NEXT_PUBLIC_MEDIA_HOST}:${process.env.NEXT_PUBLIC_MEDIA_PORT}`
+
+        socket = io(socket_url, {
+            // path: "/io/socket.io"
+        })
+
+        console.log("Try connection", socket_url)
+
+        socket.on("connect",  socketConnectionHandler)
+
+    }, []);
+
 
     useEffect(() => {
 
@@ -193,7 +228,7 @@ const SocketContext = ({room, children}) => {
         rtcPeer: peer,
         channelReady: channelReady,
         sendChatMessage: (message) => {
-            messages.current = [...messagesVals, {room: room, msg: message, from: username, isMe: true }]
+            messages.current = [...messagesVars, {room: room, msg: message, from: username, isMe: true }]
             setMessages(messages.current)
             socket.emit("newMessage", {room: room, msg: message, fromSocket: socket.id, from: username, isMe: false })
         },

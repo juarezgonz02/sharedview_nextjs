@@ -23,8 +23,8 @@ const P5Sketch = ({username, media}) => {
         p5.setup = () => {
             p5.createCanvas(120, 120);
             audioCtx = new window.AudioContext()
-            width = 110;
-            height = 110;
+            width = 120;
+            height = 120;
 
             // amplitude = new p5.Amplitude();
             //textFont(fontRegular);
