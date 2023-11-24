@@ -1,29 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-@media screen and (max-width: 1200px) {
-    #root{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        margin: 2em;
-        margin-bottom: 0em;
-        width: calc(100vw-100px);
-        height: calc(100vh-2em);
-    }
-}
-#root{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 2em;
-    margin-bottom: 0em;
-    width: calc(100vw-100px);
-    height: calc(100vh-2em);
-}
 .main-container{
-    width: auto;
-    height: 90vh;
+    width: 65%;
+    height: 95vh;
 }
 .message {
     margin-bottom: 1em;
@@ -31,17 +14,26 @@
 }
 .control-users-container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 0.5em;
     width: 60vw;
-    height: 100px;
+}
+.controler-box{
+    width: 120px;
+    height: 144px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 .controler-container{
     display: flex;
     align-items: center;
+    justify-items: center;
+    flex-direction: column;
     justify-content: space-around;
-    width: 110px;
-    height: 110px;
+    height: 100%;
+    width: 120px;
 }
 #controler:hover{
     cursor: pointer;
@@ -92,19 +84,13 @@
     border-left: 3px solid #976ccc;
 }
 .video-container{
-    width: 60vw;
-    background-color: rgba(21, 21, 21, 0.8);
+    display: flex;
+    align-items: center ;
+    width: 65vw;
     height: 70vh;
-    background: URL('./assets/ICONO.png');
-    background-repeat: no-repeat;
-    background-position: center;
     margin-right: 0;
 }
-#video-stream-cont{
 
-    display: fixed;
-    z-index: -1;
-}
 #localAudio{
     display: none;
 }
@@ -132,7 +118,6 @@
     width: 15vw;
     height: 19vh;
     flex-direction: row;
-    justify-content: space-around;
 }
 .chat-container{
     background-color: rgba(25, 25, 25, 0.8);
@@ -204,4 +189,13 @@
 .send-ico:hover{
 
     color: white;
+}
+.video-stream-cont{
+    width: 85%;
+}
+.stream-video{
+    visibility: hidden;
+}
+.loaded-stream-video{
+    visibility: visible;
 }

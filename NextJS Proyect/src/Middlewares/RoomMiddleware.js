@@ -1,7 +1,7 @@
 import {NextResponse} from "next/server";
 import md5 from "md5";
 
-const API_ENV_URL = `${process.env.NEXT_PUBLIC_WEB_PROTOCOL}://${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}`
+const API_ENV_URL = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_API_HOST}:${process.env.NEXT_PUBLIC_API_PORT}`
 
 const WEB_ENV_URL = `${process.env.NEXT_PUBLIC_WEB_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_WEB_PORT}`
 
@@ -19,7 +19,18 @@ const fetchRoomExp = async (room_code, token) => {
 
     const data = await res.json()
 
-    return {exp: new Date(data.room.expirationDate).getTime(), status: res.status}
+    if(res.status !== 200) {
+        return {exp: 0, status: res.status, isPublic: false}
+
+    }
+
+    return {
+        exp: new Date(data.room.expirationDate).getTime(),
+        status: res.status,
+        isPublic: data.room.isPublic
+    }
+
+
 }
 
 const generateResponseWithCookie = (room, exp) => {
@@ -55,12 +66,10 @@ const roomsMiddleware = async (request) => {
         const { exp, status } = await fetchRoomExp(room, token)
 
         if (status === 200) {
-            if (parseInt(exp) < new Date().getTime()) {
-                return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/expired`))
-            }
-            else{
-                return generateResponseWithCookie(room, exp)
-            }
+
+                        
+
+
         }
 
         if(status === 401){

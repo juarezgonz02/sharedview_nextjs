@@ -9,14 +9,16 @@ export default function Page({ params }) {
 
   return (
   <SocketContext room={params.rooms} >
+    <div className="flex ml-8 mt-8 ">
 
-    <div className="main-container">
+      <div className="main-container">
 
-      <StreamPlayer />
-      <CallInterface />
+        <StreamPlayer />
+        <CallInterface />
 
+      </div>
+      <Chat />
     </div>
-    <Chat />
 
   </SocketContext>
   )

@@ -33,7 +33,7 @@ const StreamPlayer = () => {
 
                   flvPlayer.on(flv.Events.METADATA_ARRIVED, ()=>{
                       setLoaded(true)
-                      videoPlayerElement.current.className  = "loaded-stream-video"
+                      videoPlayerElement.current.className  = "static loaded-stream-video"
                   })
 
                   flvPlayer.attachMediaElement(videoPlayerElement.current);
@@ -47,21 +47,20 @@ const StreamPlayer = () => {
         }
 
         useEffect(() => {
-            play_stream()
+            try {
+                play_stream()
+            }catch (e){
+                console.log("Stream Server Connection Failed")
+            }
         }, [])
 
         return (
             <div className="video-container">
 
-                {
-                    !loaded &&
-                    <StreamInstruction />
-                }
+                <StreamInstruction isLoaded={loaded} />
 
-                <div id="video-stream-cont">
-
+                <div hidden={!loaded} className="video-stream-cont">
                      <video autoPlay controls className={"stream-video"} ref={videoPlayerElement} ></video>
-
                 </div>
 
             </div>)
