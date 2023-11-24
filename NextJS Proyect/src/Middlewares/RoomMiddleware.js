@@ -67,8 +67,13 @@ const roomsMiddleware = async (request) => {
 
         if (status === 200) {
 
-                        
 
+            if (parseInt(exp) < new Date().getTime()) {
+                return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/expired`))
+            }
+            else{
+                return generateResponseWithCookie(room, exp)
+            }
 
         }
 
