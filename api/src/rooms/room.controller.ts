@@ -104,8 +104,8 @@ export class RoomController{
     }
 
     @UseGuards(AuthGuard)
-    @Patch("/:code/user/:id")
-    async toggleAccessUsers(@Req() req: Request, @Res() res: Response, @Param("code") code: string, @Param("id") user: string){
+    @Patch("/:code/user/:identifier")
+    async toggleAccessUsers(@Req() req: Request, @Res() res: Response, @Param("code") code: string, @Param("identifier") user: string){
         try {
             this.logger.verbose("Toggling User Access...");
             const roomFound = await this.roomService.getRoomInfo(code);
@@ -118,13 +118,14 @@ export class RoomController{
                 this.logger.verbose("User is not the owner")
                 return res.status(403).json({ message: "Forbidden!" });
             };
-            const hasAccess = roomFound.accessUsers.findIndex(u => u == user as unknown as User);
-            if(hasAccess){
+            const userFound =  await this.userService.findUserByIdentifier(user);
+            const hasAccess = roomFound.accessUsers.findIndex(u => u.equals(userFound._id));
+            if(hasAccess < 0){
                 this.logger.verbose("Adding to Room...");
-                await this.roomService.addUserToRoom(code, user);
+                await this.roomService.addUserToRoom(code, userFound._id as unknown as string);
             }else{
                 this.logger.verbose("Removing from Room...");
-                await this.roomService.deleteUserFromRoom(code, user);
+                await this.roomService.deleteUserFromRoom(code, userFound._id as unknown as string);
             }
             
             this.logger.verbose("User Access toggled!");
@@ -170,7 +171,7 @@ export class RoomController{
     async userAccess(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
         try {
             const roomFound = await this.roomService.getRoomInfo(code);
-            const hasAccess = roomFound.accessUsers.findIndex(u => u == req.user["id"] as unknown as User);
+            const hasAccess = roomFound.accessUsers.findIndex(u => u == req.user["id"]);
             if(hasAccess < 0){
                 this.logger.verbose("User is not in the access list!");
                 return res.status(200).json({ status: "Unavailable!", message: "You cannot access the room!"});
