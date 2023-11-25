@@ -18,7 +18,7 @@ export class Room{
     @Prop({ default: true })
     isPublic: boolean;
     @Prop({ default: []})
-    accessUsers: User[];
+    accessUsers: mongoose.Types.ObjectId[];
     @Prop({ default: new Date() })
     creationDate: Date;
     @Prop()
