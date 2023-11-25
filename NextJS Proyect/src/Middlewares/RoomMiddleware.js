@@ -69,7 +69,7 @@ const checkAccessToRoom = async (room, token, exp) => {
         checkExpirationRoom(exp)
     }
 
-    return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/badcode`))
+    return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/noroomaccess`))
 
 
 
