@@ -60,10 +60,11 @@ export class RoomService{
     }
 
     async addUserToRoom(roomCode: string, userId: string){
-        const roomUpdated = await this.roomModel.updateOne({ code: roomCode}, { $push: { accessUsers: userId }});
+        await this.roomModel.updateOne({ code: roomCode}, { $push: { accessUsers: userId }});
     }
 
     async deleteUserFromRoom(roomCode: string, userId: string){
-        const roomUpdated = await this.roomModel.updateOne({ code: roomCode}, { $pull: { accessUsers: userId }});
+        await this.roomModel.updateOne({ code: roomCode}, { $pull: { accessUsers: userId}});
     }
+
 }

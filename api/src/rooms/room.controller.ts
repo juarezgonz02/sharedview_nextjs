@@ -1,16 +1,17 @@
 import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, Req, Res, UseGuards } from "@nestjs/common";
 import { CreateRoomDto } from "./models/dtos/CreateRoomDto";
-import { AuthGuard } from "src/auth/auth.guard";
+import { AuthGuard } from "../auth/auth.guard";
 import { RoomService } from "./room.service";
 import { Request, Response } from "express";
-import { User } from "src/users/models/entities/user.schema";
-
+import { User } from "../users/models/entities/user.schema";
+import { UserService } from "../users/user.service";
 
 @Controller("room")
 export class RoomController{
     private readonly logger = new Logger(RoomController.name);
     constructor(
-        private roomService: RoomService
+        private roomService: RoomService,
+        private userService: UserService
     ){}
     /*
     Endpoints:
@@ -117,19 +118,18 @@ export class RoomController{
                 this.logger.verbose("User is not the owner")
                 return res.status(403).json({ message: "Forbidden!" });
             };
-            
-            const hasAccess = roomFound.accessUsers.findIndex(u => u == user as unknown as User);
-
-            if(hasAccess){
+            const userFound =  await this.userService.findUserByIdentifier(user);
+            const hasAccess = roomFound.accessUsers.findIndex(u => u.equals(userFound._id));
+            if(hasAccess < 0){
                 this.logger.verbose("Adding to Room...");
-                await this.roomService.addUserToRoom(code, user);
+                await this.roomService.addUserToRoom(code, userFound._id as unknown as string);
             }else{
                 this.logger.verbose("Removing from Room...");
-                await this.roomService.deleteUserFromRoom(code, user);
+                await this.roomService.deleteUserFromRoom(code, userFound._id as unknown as string);
             }
             
             this.logger.verbose("User Access toggled!");
-            return res.status(200).json({ message: "Tested!"})
+            return res.status(200).json({ message: "User access has been toggled!"})
         } catch (error) {
             this.logger.error(error);
             return res.status(500).json({ message: "Internal Server Error!" });
@@ -137,9 +137,9 @@ export class RoomController{
     }
 
     @Get("/status/:code")
-    async getRoomStatus(@Req() req: Request, @Res() res: Response, @Param("code") code: string,){
+    async getRoomStatus(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
         try {
-            this.logger.verbose("Fetchin Room Status...");
+            this.logger.verbose("Fetching Room Status...");
             const roomFound = await this.roomService.getRoomInfo(code);
             if(!roomFound){
                 this.logger.verbose("Room was not found");
@@ -159,21 +159,27 @@ export class RoomController{
                 return res.status(200).json({ status: "Available!", message: "You can access the room!"});
             }
 
-            if(!req.user){
-                this.logger.verbose("Room is available, but user is not logged in");
-                return res.status(200).json({  message: "Please log in to see accessibility!"});
-            }
-
-            const hasAccess = roomFound.accessUsers.findIndex(u => u == req.user["id"] as unknown as User);
-
-            if(hasAccess){
+            this.logger.verbose("Redirect to authenticated path!")
+            return res.redirect(`${req.baseUrl}/room/status/${code}/private`);
+        } catch (error) {
+            this.logger.error(error);
+            return res.status(500).json({ message: "Internal Server Error!" });
+        }
+    }
+    @UseGuards(AuthGuard)
+    @Get("/status/:code/private")
+    async userAccess(@Req() req: Request, @Res() res: Response, @Param("code") code: string){
+        try {
+            const roomFound = await this.roomService.getRoomInfo(code);
+            const hasAccess = roomFound.accessUsers.findIndex(u => u == req.user["id"]);
+            if(hasAccess < 0){
+                this.logger.verbose("User is not in the access list!");
+                return res.status(401).json({ status: "Unavailable!", message: "You cannot access the room!"});
+                
+            }else{
                 this.logger.verbose("User is in the access list!");
                 return res.status(200).json({ status: "Available!", message: "You can access the room!"});
-            }else{
-                this.logger.verbose("User is not in the access list!");
-                return res.status(200).json({ status: "Unavailable!", message: "You cannot access the room!"});
             }
-                        
         } catch (error) {
             this.logger.error(error);
             return res.status(500).json({ message: "Internal Server Error!" });

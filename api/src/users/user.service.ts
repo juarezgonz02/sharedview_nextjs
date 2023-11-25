@@ -31,6 +31,6 @@ export class UserService{
     }
 
     async deleteUserByIdentifier(identifier: string){
-        await this.userModel.deleteOne({ $or: [{_id: identifier}, { username: identifier}, {email: identifier}]});
+        await this.userModel.deleteOne({ $or: [{ username: identifier}, {email: identifier}]});
     }
 }
