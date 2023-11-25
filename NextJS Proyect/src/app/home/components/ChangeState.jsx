@@ -8,7 +8,7 @@ const onFinish = (onSuccess, onError, code, handleStateOk, getRooms) => (values)
     setTimeout(() => {
         handleStateOk();
         getRooms();
-    }, 2000);
+    }, 1500);
 }
 
 const ChangeState = ({ handleStateOk, handleStateCancel, code, state, getRooms}) => {

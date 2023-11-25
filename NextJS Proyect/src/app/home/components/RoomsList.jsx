@@ -4,6 +4,7 @@ import { Tooltip, Popconfirm, ConfigProvider } from 'antd'
 import { Modal } from 'antd';
 import ChangeState from './ChangeState';
 import AddUsers from './AddUsers';
+import Link from 'next/link';
 
 
 const formatDate = (dateString) => {
@@ -69,7 +70,9 @@ const RoomsTable = ({ rooms, deleteRoom, getRooms}) => {
                         <span className='text-white text-sm font-bold phone:text-xs'>
                             {room.isPublic ? 'Publica' : 'Privada'}
                         </span>
-                        <button className='bg-purple hover:bg-violet-900 text-white text-sm font-bold py-1 px-2 rounded phone:px-1 phone:text-xs'>Ingresar</button>
+                        <Link href={`${room.code}`}>
+                            <button className='bg-purple hover:bg-violet-900 text-white text-sm font-bold py-1 px-2 rounded phone:px-1 phone:text-xs'>Ingresar</button>
+                        </Link>
                         <div className='flex flex-row gap-2'>
                             <Popconfirm
                                 title="Delete the task"
