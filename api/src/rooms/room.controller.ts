@@ -174,7 +174,7 @@ export class RoomController{
             const hasAccess = roomFound.accessUsers.findIndex(u => u == req.user["id"]);
             if(hasAccess < 0){
                 this.logger.verbose("User is not in the access list!");
-                return res.status(200).json({ status: "Unavailable!", message: "You cannot access the room!"});
+                return res.status(401).json({ status: "Unavailable!", message: "You cannot access the room!"});
                 
             }else{
                 this.logger.verbose("User is in the access list!");
