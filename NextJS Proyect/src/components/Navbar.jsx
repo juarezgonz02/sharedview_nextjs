@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import LogoSharedView from "../../public/ICONO.png";
+import { LoginOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 const Clock = () => {
     const [date, setDate] = useState("");
@@ -28,7 +30,7 @@ const Clock = () => {
 
 
 
-const Navbar = ({ isLogged, username }) => {
+const Navbar = ({ username }) => {
     return (
         <div className="flex flex-row items-center justify-between py-4 top-0 w-full px-8">
             <div className="flex items-center gap-4">
@@ -41,7 +43,7 @@ const Navbar = ({ isLogged, username }) => {
                 </div>
             </div>
             <div className="flex flex-row items-center gap-4">
-                {isLogged ? (
+                {username ? (
                     <>
                         <div className="phone:hidden">
                             <Clock />
@@ -49,6 +51,11 @@ const Navbar = ({ isLogged, username }) => {
                         <span className="text-white font-bold tablet:text-sm">
                             {username}
                         </span>
+                        <Link href="/logout">
+                            <LoginOutlined
+                                style={{ fontSize: "20px", marginTop: "5px" }}
+                            />
+                        </Link>
                     </>
                 ) : (
                     <div className="phone:flex">

@@ -7,7 +7,7 @@ const onFinish = (onSuccess, onError, code, handleAddUserOk, formRef, getRooms) 
     useFetchAddUser(values, code, onSuccess, onError);
     setTimeout(() => {
         handleAddUserOk();
-    }, 2000);
+    }, 1500);
     getRooms();
     formRef.current.resetFields();
 }

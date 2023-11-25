@@ -12,7 +12,7 @@ const CreateRoomForm = ({ handleOk, handleCancel, createRooms }) => {
         createRooms(values, onSuccess, onError);
         setTimeout(() => {
             handleOk();
-        }, 2000);
+        }, 1500);
         formRef.current.resetFields();
     };
 
