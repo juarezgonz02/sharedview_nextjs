@@ -20,7 +20,7 @@ const Chat = () => {
     return <div className="chat-container">
         <div className="chat-header">
             <span>
-                Mensajes
+                Chat
             </span>
         </div>
 

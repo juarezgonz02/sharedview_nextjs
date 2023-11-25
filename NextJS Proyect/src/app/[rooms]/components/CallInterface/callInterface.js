@@ -11,14 +11,8 @@ const CallInterface = () => {
  const users_in_call = useContext(socketContext).users
   return (
     <div className="control-users-container">
-
-      <div>
-        <p> En la llamada: </p>
-      </div>
-
-      <div id="remoteAudio-container">
-          <VoiceController username={"Me"} key={"voice-controller-component"}></VoiceController>
-          <div className="flex h-fit">
+      <div >
+          <div className="flex h-fit w-fit">
           {
               Array.from(users_in_call.current.values()).map((u) =>
                   !u.isMe &&

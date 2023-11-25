@@ -30,13 +30,10 @@ export const loggedMiddleware = (request) => {
 
 export const clearCookies = () => {
     const response =  NextResponse.redirect(ENV_URL+"/")
-    response.cookies.set({
-        name: 'token',
-        value: "",
-        path: `/`,
-        HttpOnly: true,
-        Expires: 0
-    })
+    response.headers.set(
+        'Set-Cookie',
+        'token=; expires=Sun, 06 Nov 1994 08:49:37 GMT; path=/;'
+    );
 
     return response
 }

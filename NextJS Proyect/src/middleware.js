@@ -17,7 +17,7 @@ export async function middleware(request) {
       return loggedMiddleware(request)
   }
 
-  if(request.nextUrl.pathname === "/login"){
+  if(request.nextUrl.pathname === "/logout"){
       return clearCookies(request)
   }
 

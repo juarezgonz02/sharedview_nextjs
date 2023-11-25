@@ -61,17 +61,16 @@ const checkAccessToRoom = async (room, token, exp) => {
 
     const res = await fetch(`${API_ENV_URL}/room/status/${room}`, {
         headers: {
-            "bearer": token
+            "Authorization":
+                `Bearer ${token}`
         }
     })
 
     if(res.status !== 401){
-        checkExpirationRoom(exp)
+        return checkExpirationRoom(room, exp)
     }
 
     return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/noroomaccess`))
-
-
 
 }
 
@@ -80,7 +79,6 @@ const roomsMiddleware = async (request) => {
     const room = request.nextUrl.pathname.substring(1)
 
     const hasToken = request.cookies.has('token')
-
 
     if(!hasToken){
         return NextResponse.redirect(new URL(`${WEB_ENV_URL}/login`))

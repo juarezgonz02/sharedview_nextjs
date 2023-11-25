@@ -32,16 +32,6 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-            <LoginForm />
-          <div className="flex flex-col">
-            <Image
-              src={LoginIMG}
-              width={500}
-              height={500}
-              alt="logo"
-              className="phone:h-60 phone:w-60"
-            />
-          </div>
       </div>
   );
 };
