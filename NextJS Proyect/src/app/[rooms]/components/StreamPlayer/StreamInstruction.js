@@ -16,7 +16,7 @@ const StreamInstruction = ({isLoaded}) => {
             }
     }
 
-    const [visibilityClass, setVisibilityClass] = useState("w-4/5 flex visible justify-center flex-col");
+    const [visibilityClass, setVisibilityClass] = useState("w-4/5 overflow-hidden flex visible justify-center flex-col");
     useEffect(() => {
         if(isLoaded){
             setVisibilityClass("hidden")
@@ -37,7 +37,7 @@ const StreamInstruction = ({isLoaded}) => {
                 },
             }}
         >
-            <Image className={"w-2/5"} src={ico}  alt={"sharedview img"} />
+            <Image className={"w-2/6 "} src={ico}  alt={"sharedview img"} />
             <h2 className={"w-fit"}>
                 {`Instructions`}
             </h2>

@@ -6,7 +6,9 @@
 
 .main-container{
     width: 65%;
-    height: 95vh;
+    height: 65%;
+    display: flex;
+    flex-wrap: wrap;
 }
 .message {
     margin-bottom: 1em;
@@ -16,7 +18,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 0.5em;
-    width: 60vw;
+    width: auto;
 }
 .controler-box{
     width: 120px;
@@ -59,6 +61,20 @@
     height: 75px;
     background-image: url("./assets/mic-logo-off.svg");
 }
+
+.chat-icon{
+    width: 60px;
+    height: 60px;
+    margin: auto;
+}
+
+.chat_closed{
+    background-color:#976ccc;
+    width: 75px;
+    height: 75px;
+    background-image: url("./assets/chat-square.svg");
+}
+
 .controler_waiting{
     border-radius: 75px;
     cursor: pointer;
@@ -67,8 +83,8 @@
     width: 75px;
     height: 75px;
     background-image: url("./assets/mic-logo-off.svg");
-
 }
+
 .UsersDisplay{
     margin-left: 3em;
 }
@@ -86,9 +102,9 @@
 .video-container{
     display: flex;
     align-items: center ;
-    width: 65vw;
+    width: 100%;
     height: 70vh;
-    margin-right: 0;
+    margin-bottom: 1em;
 }
 
 #localAudio{
@@ -115,17 +131,21 @@
 }
 #remoteAudio-container{
     display: flex;
-    width: 15vw;
-    height: 19vh;
+    flex-wrap: wrap;
+    width: auto;
+    height: auto;
     flex-direction: row;
+    justify-content: center;
 }
+
 .chat-container{
-    background-color: rgba(25, 25, 25, 0.8);
-    width: 27vw;
+    background-color: rgba(25, 25, 25);
+    width: 25%;
     height: 90vh;
     display: flex;
     flex-direction: column;
 }
+
 .chat-header{
     display: flex;
     text-align: center;
@@ -134,7 +154,7 @@
     height: 10%;
     width: 100%;
     border-bottom: 2px solid #976ccc ;
-    background-color: rgba(30, 30, 30, 0.8);
+    background-color: rgba(30, 30, 30);
 }
 .chat-header>span{
     font-size: 1.5em;
@@ -171,6 +191,10 @@
     overflow-y: auto;
 
 }
+.chat{
+    display: none;
+}
+
 #send{
     width: 20%;
     display: flex;
@@ -198,4 +222,29 @@
 }
 .loaded-stream-video{
     visibility: visible;
+}
+
+@media only screen and (max-width: 767px) {
+    .chat-container {
+        display: none;
+    }
+    .show-chat-true{
+        display: flex;
+        position: fixed;
+        width: 98vw;
+        height: 95vh;
+    }
+
+    .main-container {
+        width: 90%;
+        height: 95vh;
+    }
+    .chat{
+        display: flex;
+    }
+}
+
+/* Styles for devices with a minimum width of 768 pixels and a maximum width of 1023 pixels (tablets) */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+    /* Your styles for tablets go here */
 }

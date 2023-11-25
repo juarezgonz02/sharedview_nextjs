@@ -2,9 +2,12 @@ import React from "react";
 import { Button, Select, Form, ConfigProvider } from "antd";
 import toast, { Toaster } from "react-hot-toast";
 import { useFetchChangeState } from "../libs/useFetchChangeState";
+import {useFetchAddUser} from "@/app/home/libs/useFetchAddUser";
+import Cookies from "js-cookie";
 
 const onFinish = (onSuccess, onError, code, handleStateOk, getRooms) => (values) => {
     useFetchChangeState(values, code, onSuccess, onError);
+    useFetchAddUser({username:localStorage.getItem("username")}, code, ()=>{}, onError);
     setTimeout(() => {
         handleStateOk();
         getRooms();

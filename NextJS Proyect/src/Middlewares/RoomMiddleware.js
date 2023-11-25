@@ -48,12 +48,37 @@ const generateResponseWithCookie = (room, exp) => {
     return response
 }
 
+const checkExpirationRoom = (room, exp) => {
+    if (parseInt(exp) < new Date().getTime()) {
+        return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/expired`))
+    }
+    else{
+        return generateResponseWithCookie(room, exp)
+    }
+}
+
+const checkAccessToRoom = async (room, token, exp) => {
+
+    const res = await fetch(`${API_ENV_URL}/room/status/${room}`, {
+        headers: {
+            "Authorization":
+                `Bearer ${token}`
+        }
+    })
+
+    if(res.status !== 401){
+        return checkExpirationRoom(room, exp)
+    }
+
+    return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/noroomaccess`))
+
+}
+
 const roomsMiddleware = async (request) => {
 
     const room = request.nextUrl.pathname.substring(1)
 
     const hasToken = request.cookies.has('token')
-
 
     if(!hasToken){
         return NextResponse.redirect(new URL(`${WEB_ENV_URL}/login`))
@@ -63,26 +88,24 @@ const roomsMiddleware = async (request) => {
 
         const token = request.cookies.get('token').value
 
-        const { exp, status } = await fetchRoomExp(room, token)
+        const { exp, status, isPublic } = await fetchRoomExp(room, token)
 
         if (status === 200) {
 
-
-            if (parseInt(exp) < new Date().getTime()) {
-                return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/expired`))
-            }
-            else{
-                return generateResponseWithCookie(room, exp)
+            if(isPublic){
+                return checkExpirationRoom(room, exp)
+            }else{
+                return checkAccessToRoom(room, token, exp)
             }
 
         }
 
         if(status === 401){
-            return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/noroomaccess`))
+            return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/badcode`))
         }
 
         if (status === 404) {
-            return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/warnings/badcode`))
+            return NextResponse.rewrite(new URL(`${WEB_ENV_URL}/badcode`))
         }
 
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

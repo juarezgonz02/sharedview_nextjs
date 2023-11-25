@@ -1,9 +1,11 @@
 {
-  "name": "sharedview",
+  "name": "sharedview_signaling_server",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "dependencies": {
+    "@socket.io/cluster-adapter": "^0.2.2",
+    "@socket.io/pm2": "^5.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "node-static": "^0.7.10",
@@ -11,6 +13,9 @@
     "yarn": "^1.22.10"
   },
   "scripts": {
-    "dev": "node index.js"
+    "dev": "pm2 start index.js --watch --name signaling_server -i 2 && pm2 monit ",
+    "prod": "pm2 start ecosystem.config.cjs",
+    "stop": "pm2 stop signaling_server",
+    "logs": "pm2 logs"
   }
 }

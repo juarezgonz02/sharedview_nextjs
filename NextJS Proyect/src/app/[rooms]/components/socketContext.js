@@ -183,7 +183,7 @@ const SocketContext = ({room, children}) => {
         const socket_url = `${process.env.NEXT_PUBLIC_MEDIA_PROTOCOL}://${process.env.NEXT_PUBLIC_MEDIA_HOST}:${process.env.NEXT_PUBLIC_MEDIA_PORT}`
 
         socket = io(socket_url, {
-            // path: "/io/socket.io"
+             path: "/io/socket.io"
         })
 
         console.log("Try connection", socket_url)
