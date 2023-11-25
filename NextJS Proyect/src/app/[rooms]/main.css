@@ -139,7 +139,7 @@
 }
 
 .chat-container{
-    background-color: rgba(25, 25, 25, 0.8);
+    background-color: rgba(25, 25, 25);
     width: 25%;
     height: 90vh;
     display: flex;
@@ -154,7 +154,7 @@
     height: 10%;
     width: 100%;
     border-bottom: 2px solid #976ccc ;
-    background-color: rgba(30, 30, 30, 0.8);
+    background-color: rgba(30, 30, 30);
 }
 .chat-header>span{
     font-size: 1.5em;
@@ -227,6 +227,12 @@
 @media only screen and (max-width: 767px) {
     .chat-container {
         display: none;
+    }
+    .show-chat-true{
+        display: flex;
+        position: fixed;
+        width: 98vw;
+        height: 95vh;
     }
 
     .main-container {

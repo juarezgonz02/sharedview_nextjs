@@ -4,7 +4,7 @@ import {useContext, useEffect, useState} from "react";
 import MessageComponent from "./message";
 import { socketContext } from "@/app/[rooms]/components/socketContext";
 
-const Chat = () => {
+const Chat = ({showChat}) => {
 
     const sendChatMessage = useContext(socketContext).sendChatMessage
 
@@ -17,7 +17,7 @@ const Chat = () => {
         e.target.reset()
     }
 
-    return <div className="chat-container">
+    return <div className={`chat-container show-chat-${showChat}`} >
         <div className="chat-header">
             <span>
                 Chat
