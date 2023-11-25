@@ -1,7 +1,7 @@
 import md5 from 'md5'
 import { NextResponse } from 'next/server'
 import roomsMiddleware from "./Middlewares/RoomMiddleware"
-import {sessionMiddleware, homePageSessionMiddleware, loggedMiddleware} from "./Middlewares/sessionMiddleware"
+import {sessionMiddleware, homePageSessionMiddleware, clearCookies, loggedMiddleware} from "./Middlewares/sessionMiddleware"
 
 export async function middleware(request) {
 
@@ -15,6 +15,10 @@ export async function middleware(request) {
 
   if(request.nextUrl.pathname === "/login"){
       return loggedMiddleware(request)
+  }
+
+  if(request.nextUrl.pathname === "/login"){
+      return clearCookies(request)
   }
 
   if(request.nextUrl.pathname.match('(?:[A-Za-z0-9]{3}-){2}[A-Za-z0-9]{3}')){
