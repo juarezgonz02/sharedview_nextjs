@@ -8,8 +8,6 @@ config()
 
 const publish = new NodeMediaServer(publish_config)
 const relay1 = new NodeMediaServer(pull_config_0)
-
-//TODO: FETCH API FOR CODE 
  
 const consult_api_for_room = async (streamPath) => {
   
@@ -62,12 +60,6 @@ const prePublishCallback = async (nms, id, StreamPath, args) => {
     }
   
 }
-
-const prePlayCallback = (id, StreamPath, args) => {
-   //console.log('[NodeEvent on prePlay]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
-   // let session = nms.getSession(id);
-  }
-
 
   
 publish.on('prePublish', async(id, StreamPath, args) => { prePublishCallback(publish, id, StreamPath, args ) } );

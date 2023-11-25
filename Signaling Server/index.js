@@ -2,13 +2,8 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server as socketIO } from 'socket.io'; // Import 'Server' from socket.io as 'socketIO'
 import cors from 'cors'; // Import the 'cors' middleware
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import { createAdapter } from "@socket.io/cluster-adapter";
 import { setupWorker } from "@socket.io/sticky";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = express();
 
@@ -51,12 +46,19 @@ io.on('connection', (socket) => {
 
   });
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-    socket.in(Array.from(socket.rooms)[1]).emit("user_disconnected", socket.id)
+  socket.on('disconnecting', () => {
+
+    socket.rooms.forEach(
+      (room) => {
+        io.in(room).emit("user-disconnected", socket.id)
+      })
+
+    console.log("User Disconnected", socket.id)
   });
+
+
 });
 
-server.listen(80, () => {
+server.listen(8880, () => {
   console.log('Listening on *:80');
 });
