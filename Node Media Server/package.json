@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "RMTP for livestreaming transmition",
   "main": "app.js",
+  "type": "module",
   "scripts": {
+    "prod": "pm2 start publish_server.js --watch && pm2 start pull_server.js --watch -i 2  ",
+    "dev-test": "pm2 start main.js --watch",
+    "dev": "pm2 start publish_server.js && pm2 start pull_server.js -i 0  ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  {
-    "dependencies": {
-      "node-media-server": "^2.6.2"
-    }
-  },  
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "md5": "^2.3.0",
+    "node-media-server": "^2.6.2"
+  },
   "author": "",
   "license": "ISC"
 }
