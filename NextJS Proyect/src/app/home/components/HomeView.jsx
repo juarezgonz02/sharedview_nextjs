@@ -142,7 +142,7 @@ const ImageHome = () => {
             width={500}
             height={500}
             alt="img"
-            className="phone:h-60 phone:w-60"
+            className="phone:h-60 phone:w-60 tablet:h-96 tablet:w-96"
         />
     );
 };
@@ -198,8 +198,8 @@ const Rooms = () => {
 
 const HomeView = () => {
     return (
-        <div className="flex flex-row items-center justify-evenly px-8 w-full phone:flex-col-reverse phone:justify-center">
-            <div className="w-1/2 flex flex-col gap-8 tablet:w-full">
+        <div className="flex flex-row items-center justify-evenly px-8 w-full tablet:flex-col-reverse tablet:justify-center">
+            <div className="w-1/2 flex flex-col gap-8 tablet:w-full tablet:mb-8">
                 <Header />
                 <Rooms />
             </div>

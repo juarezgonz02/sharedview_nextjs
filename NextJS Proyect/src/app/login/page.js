@@ -13,15 +13,15 @@ const Page = () => {
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             <span className="text-white font-bold text-2xl phone:text-lg">
-                                Login
+                                Iniciar sesión
                             </span>
                             <span className="text-base phone:text-sm">
-                                Doesn`&apos;t have an account?{""}
+                                ¿No tienes una cuenta?{" "}
                                 <a
                                     href="/registration"
                                     className="text-purple underline hover:text-fuchsia-600"
                                 >
-                                    Register now!
+                                    Registrate ahora
                                 </a>
                             </span>
                         </div>
@@ -32,8 +32,8 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-      </div>
-  );
+        </div>
+    );
 };
 
 export default Page;

@@ -3,6 +3,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import RegisterIMG from "../../../public/Sign up-amico.png";
 import Image from "next/image";
+import Link from "next/link";
 
 const Page = () => {
   return (
@@ -13,16 +14,16 @@ const Page = () => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <span className="text-white font-bold text-2xl phone:text-lg">
-                Register
+                Registrarse
               </span>
               <span className="text-base phone:text-sm">
-                Already have an account?{" "}
+                ¿Ya tienes una cuenta?{" "}
                 <a
-                  href=""
-                  className="text-purple underline hover:text-fuchsia-600"
-                >
-                  Login now!
-                </a>
+                    href="/login"
+                    className="text-purple underline hover:text-fuchsia-600"
+                  >
+                    Inicia sesión
+                  </a>
               </span>
             </div>
             <RegisterForm />

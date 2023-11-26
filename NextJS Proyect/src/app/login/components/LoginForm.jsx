@@ -33,6 +33,8 @@ const LoginForm = () => {
                     },
                     Form: {
                         labelColor: "#fff",
+                        labelRequiredMarkColor: "#7f19b4",
+                        colorError: "#a233d1",
                     },
                     Input: {
                         colorBgContainer: "#1e1e1e",
@@ -41,6 +43,7 @@ const LoginForm = () => {
                         colorTextPlaceholder: "rgba(255, 255, 255, 0.4)",
                         activeBorderColor: "#fff",
                         hoverBorderColor: "#fff",
+                        colorError: "#fff",
                     },
                     Select: {
                         colorBorder: "#1e1e1e",
@@ -58,41 +61,40 @@ const LoginForm = () => {
         >
             <Form
                 name="normal_login"
-                initialValues={{
-                    remember: true,
-                }}
                 onFinish={onFinish(router, onSuccess, onError)}
                 layout="vertical"
             >
                 <Form.Item
-                    label="Username"
+                    label="Nombre de usuario"
                     name="identifier"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your Username!",
+                            message: "Porfavor ingresa tu nombre de usuario!",
                         },
                     ]}
                 >
                     <Input
                         prefix={<UserOutlined className="site-form-item-icon" />}
-                        placeholder="Input your username"
+                        placeholder="Ingrese su nombre de usuario"
+                        autoComplete="off"
                     />
                 </Form.Item>
                 <Form.Item
-                    label="Password"
+                    label="Contraseña"
                     name="password"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your Password!",
+                            message: "Porfavor ingresa tu contraseña!",
                         },
                     ]}
                 >
                     <Input
                         prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
-                        placeholder="Input your password"
+                        placeholder="Porfavor ingresa tu contraseña"
+                        autoComplete="off"
                     />
                 </Form.Item>
                 <Form.Item>
@@ -105,9 +107,10 @@ const LoginForm = () => {
                                 color: "#fff",
                                 borderColor: "#7f19b4",
                                 width: "100%",
+                                marginTop: "1rem",
                             }}
                         >
-                            Log in
+                            Iniciar sesión
                         </Button>
                     </div>
                 </Form.Item>

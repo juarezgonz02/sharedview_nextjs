@@ -69,52 +69,53 @@ const RegisterForm = () => {
                 }}
             >
                 <Form.Item
-                    label="Name"
+                    label="Nombre"
                     name="name"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your name!",
+                            message: "Porfavor ingrese su nombre!",
                         },
                     ]}
                 >
-                    <Input placeholder="Input your name" />
+                    <Input placeholder="Ingrese su nombre" autoComplete="off"/>
                 </Form.Item>
                 <Form.Item
-                    label="Username"
+                    label="Nombre de usuario"
                     name="username"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your Username!",
+                            message: "Porfavor ingrese su nombre de usuario!",
                         },
                     ]}
                 >
-                    <Input placeholder="Input your username" />
+                    <Input placeholder="Ingrese su nombre de usuario" autoComplete="off"/>
                 </Form.Item>
                 <Form.Item
-                    label="Email"
+                    label="Correo electronico"
                     name="email"
+                    autoComplete="off"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your email!",
+                            message: "Porfavor ingrese su email!",
                         },
                     ]}
                 >
-                    <Input placeholder="Input your email" />
+                    <Input placeholder="Ingrese su correo" autoComplete="off"/>
                 </Form.Item>
                 <Form.Item
-                    label="Password"
+                    label="Contraseña"
                     name="password"
                     rules={[
                         {
                             required: true,
-                            message: "Please input your Password!",
+                            message: "Porfavor ingrese su contraseña!",
                         },
                     ]}
                 >
-                    <Input.Password type="password" placeholder="Input your password" />
+                    <Input.Password type="password" placeholder="Ingrese su contraseña" autoComplete="off" />
                 </Form.Item>
                 <Form.Item>
                     <Button
@@ -129,7 +130,7 @@ const RegisterForm = () => {
                         }}
                         className="hover:bg-purple-600"
                     >
-                        Register
+                        Registrarse
                     </Button>
                 </Form.Item>
             </Form>

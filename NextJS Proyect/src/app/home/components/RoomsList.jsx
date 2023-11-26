@@ -77,10 +77,11 @@ const RoomsTable = ({ rooms, deleteRoom, getRooms }) => {
                             </span>
                             <div className='flex flex-row gap-2'>
                                 <Popconfirm
-                                    title="Delete the task"
-                                    description="Are you sure to delete this task?"
+                                    title="Eliminar sala"
+                                    description="¿Estas seguro que deseas eliminar esta sala?"
                                     okType='danger'
-                                    okText="Yes"
+                                    okText="Si"
+                                    cancelText="No"
                                     onConfirm={confirm(room.code)}
                                     cancelButtonProps={{ type: 'text' }}
                                     icon={<QuestionCircleOutlined
@@ -134,10 +135,10 @@ const RoomsTable = ({ rooms, deleteRoom, getRooms }) => {
 
 const RoomsList = ({ rooms, deleteRoom, getRooms }) => {
     return (
-        <div className='flex flex-col mt-3 tablet:items-center'>
+        <div className='flex flex-col mt-3 tablet:items-center tablet:justify-center'>
             <div className='flex flex-row gap-2'>
                 <h1 className='text-base font-bold text-white phone:text-sm'>Tus salas</h1>
-                <Tooltip placement="top" title="Only you can have three rooms maximum">
+                <Tooltip placement="top" title="Solo puedes tener 3 salas">
                     <QuestionCircleOutlined />
                 </Tooltip>
             </div>
