@@ -1,0 +1,13 @@
+{
+  "/_not-found": "/_not-found",
+  "/page": "/",
+  "/404/page": "/404",
+  "/about/page": "/about",
+  "/badcode/page": "/badcode",
+  "/expired/page": "/expired",
+  "/[rooms]/page": "/[rooms]",
+  "/home/page": "/home",
+  "/login/page": "/login",
+  "/registration/page": "/registration",
+  "/noroomaccess/page": "/noroomaccess"
+}
