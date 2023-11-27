@@ -2037,8 +2037,8 @@ var md5_default = /*#__PURE__*/__webpack_require__.n(md5);
 ;// CONCATENATED MODULE: ./src/Middlewares/RoomMiddleware.js
 
 
-const API_ENV_URL = `${"http"}://${"localhost"}:${"8000"}`;
-const WEB_ENV_URL = `${"http"}://${"localhost"}:${"3000"}`;
+const API_ENV_URL = `${"https"}://${"api.sharedview.live"}:${"80"}`;
+const WEB_ENV_URL = `${"https"}://${"sharedview.live"}:${"80"}`;
 const fetchRoomExp = async (room_code, token)=>{
     console.log("URL", `${API_ENV_URL}/room/${room_code}`);
     console.log("TOKEN", token);
@@ -2135,7 +2135,7 @@ const roomsMiddleware = async (request)=>{
 ;// CONCATENATED MODULE: ./src/Middlewares/sessionMiddleware.js
 
 
-const ENV_URL = `${"http"}://${"localhost"}:${"3000"}`;
+const ENV_URL = `${"https"}://${"sharedview.live"}:${"80"}`;
 const sessionMiddleware = async (request)=>{
     if (request.cookies.has("token")) {
         return NextResponse.redirect(ENV_URL + "/home");
