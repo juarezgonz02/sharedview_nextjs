@@ -10,16 +10,16 @@ const CallInterface = () => {
 
  const users_in_call = useContext(socketContext).users
   return (
-    <div className="control-users-container">
+    <div className="flex flex-col w-auto items-center gap-2 justify-center">
       <div >
-          <div className="flex h-fit w-fit">
+          <div className="flex">
           {
               Array.from(users_in_call.current.values()).map((u) =>
                   !u.isMe &&
-                  <div className="flex flex-col" key={`container_of_${u.id}`}>
+                  <div className="flex flex-col items-center justify-center" key={`container_of_${u.id}`}>
                     <RemoteStream stream={u.media} id={u.id} key={`audio_of_${u.id}`} />
                     <P5Sketch media={u.media} username={u.username} key={`sketch_of_${u.id}`} />
-                    <span> {u.username} </span>
+                    <span className="text-sm"> {u.username} </span>
                   </div>
               )
           }

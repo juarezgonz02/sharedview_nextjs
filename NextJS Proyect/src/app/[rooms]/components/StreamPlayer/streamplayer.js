@@ -7,63 +7,63 @@ import Cookies from 'js-cookie'
 
 const StreamPlayer = () => {
 
-        const [loaded, setLoaded] = useState(false)
+    const [loaded, setLoaded] = useState(false)
 
-        const videoPlayerElement = useRef();
+    const videoPlayerElement = useRef();
 
-        const { rooms } = useParams()
+    const { rooms } = useParams()
 
-        const videoSrc = `${process.env.NEXT_PUBLIC_MEDIA_PROTOCOL}://${process.env.NEXT_PUBLIC_MEDIA_HOST}:${process.env.NEXT_PUBLIC_MEDIA_PORT}/live/${rooms}.flv` +
-            `?sign=${Cookies.get('room-exp')}-${Cookies.get('sign')}`;
+    const videoSrc = `${process.env.NEXT_PUBLIC_MEDIA_PROTOCOL}://${process.env.NEXT_PUBLIC_MEDIA_HOST}:${process.env.NEXT_PUBLIC_MEDIA_PORT}/live/${rooms}.flv` +
+        `?sign=${Cookies.get('room-exp')}-${Cookies.get('sign')}`;
 
-        const play_stream = async () => {
+    const play_stream = async () => {
 
-            try{
+        try {
 
-              if (flv.isSupported()) {
+            if (flv.isSupported()) {
 
-                  flv.LoggingControl.enableError = false
-                  flv.LoggingControl.enableAll = false
-                  
-                  const flvPlayer = flv.createPlayer({
-                      type: 'flv',
-                      url: videoSrc,
-                      isLive: true
-                  });
+                flv.LoggingControl.enableError = false
+                flv.LoggingControl.enableAll = false
 
-                  flvPlayer.on(flv.Events.METADATA_ARRIVED, ()=>{
-                      setLoaded(true)
-                      videoPlayerElement.current.className  = "static loaded-stream-video"
-                  })
+                const flvPlayer = flv.createPlayer({
+                    type: 'flv',
+                    url: videoSrc,
+                    isLive: true
+                });
 
-                  flvPlayer.attachMediaElement(videoPlayerElement.current);
-                  flvPlayer.load();
-                  flvPlayer.play()
+                flvPlayer.on(flv.Events.METADATA_ARRIVED, () => {
+                    setLoaded(true)
+                    videoPlayerElement.current.className = "static loaded-stream-video"
+                })
 
-              }
-            } catch (e) {
-                console.log("Stream Server Connection Failed")
+                flvPlayer.attachMediaElement(videoPlayerElement.current);
+                flvPlayer.load();
+                flvPlayer.play()
+
             }
+        } catch (e) {
+            console.log("Stream Server Connection Failed")
         }
+    }
 
-        useEffect(() => {
-            try {
-                play_stream()
-            }catch (e){
-                console.log("Stream Server Connection Failed")
-            }
-        }, [])
+    useEffect(() => {
+        try {
+            play_stream()
+        } catch (e) {
+            console.log("Stream Server Connection Failed")
+        }
+    }, [])
 
-        return (
-            <div className="video-container">
+    return (
+        <div className="video-container">
 
-                <StreamInstruction isLoaded={loaded} />
+            <StreamInstruction isLoaded={loaded} />
 
-                <div hidden={!loaded} className="video-stream-cont">
-                     <video autoPlay controls className={"stream-video"} ref={videoPlayerElement} ></video>
-                </div>
+            <div hidden={!loaded} className="video-stream-cont">
+                <video autoPlay controls className={"stream-video"} ref={videoPlayerElement} ></video>
+            </div>
 
-            </div>)
+        </div>)
 }
 
 export default StreamPlayer

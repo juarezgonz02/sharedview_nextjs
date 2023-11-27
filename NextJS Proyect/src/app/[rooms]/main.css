@@ -14,32 +14,8 @@
     margin-bottom: 1em;
     font-size: 0.8em;
 }
-.control-users-container{
-    display: flex;
-    flex-direction: column;
-    margin-top: 0.5em;
-    width: auto;
-}
-.controler-box{
-    width: 120px;
-    height: 144px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-.controler-container{
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 100%;
-    width: 120px;
-}
-#controler:hover{
-    cursor: pointer;
-}
+
+
 #controler{
     border-radius: 75px;
     display: flex;
@@ -126,74 +102,23 @@
     text-align: center;
     justify-content: center;
 }
-#remoteAudio{
-    display: inline;
-}
-#remoteAudio-container{
-    display: flex;
-    flex-wrap: wrap;
-    width: auto;
-    height: auto;
-    flex-direction: row;
-    justify-content: center;
+
+
+#messages-container::-webkit-scrollbar{
+    width: 10px;  
 }
 
-.chat-container{
-    background-color: rgba(25, 25, 25);
-    width: 25%;
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
+#messages-container::-webkit-scrollbar-thumb{
+    background-color: #4F4F4F; 
+    border-radius: 6px;
 }
 
-.chat-header{
-    display: flex;
-    text-align: center;
-    flex-direction: column;
-    justify-content: center;
-    height: 10%;
-    width: 100%;
-    border-bottom: 2px solid #976ccc ;
-    background-color: rgba(30, 30, 30);
+#messages-container::-webkit-scrollbar-track{
+    background-color: #232323;
+    border-radius: 6px;
 }
-.chat-header>span{
-    font-size: 1.5em;
-}
-#message-writer{
-    display: flex;
-    flex-direction: row;
 
-    width: 100%;
-    height: 100%;
-}
-.messages-container{
-    display: flex;
-    overflow-y: auto;
-    flex-direction: column;
-    width: 100%;
-    padding: 1em;
-    height: 82%;
-}
-.messages-container > span{
-    font-weight: bold;
-}
-.messages-container::-webkit-scrollbar{
-    display: none;
-}
-#message{
-    width: 88%;
-    color: white;
-    padding-left: 8px;
-    background-color: rgba(50, 50, 50, 0.8);
-    border: 0px;
-    border-bottom: 2px bold #976ccc;
-    overflow-x: hidden;
-    overflow-y: auto;
 
-}
-.chat{
-    display: none;
-}
 
 #send{
     width: 20%;
@@ -211,7 +136,6 @@
     cursor: pointer;
 }
 .send-ico:hover{
-
     color: white;
 }
 .video-stream-cont{

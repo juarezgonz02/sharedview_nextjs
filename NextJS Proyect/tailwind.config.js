@@ -15,9 +15,20 @@ module.exports = {
       colors:{
         'purple' : "#7f19b4",
       },
+      backgroundColor: {
+        'dark': '#1e1e1e',
+        'light': '#f3f3f3',
+      },
       screens: {
         tablet: {'max': '768px'},
         phone: {'max': '479px'},
+      },
+      height: {
+        'screen-75': '75vh',
+        'screen-80': '80vh',
+        'screen-85': '85vh',
+        'screen-90': '90vh',
+        'screen-95': '95vh',
       },
     },
   },

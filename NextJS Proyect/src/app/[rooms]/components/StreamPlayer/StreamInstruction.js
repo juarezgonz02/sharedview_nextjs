@@ -1,80 +1,118 @@
-import React, {useEffect, useState} from 'react';
-import {Button, ConfigProvider, Tag} from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, ConfigProvider, Tag } from "antd";
 import Cookies from "js-cookie";
-import ico from "../../assets/ICONO.png"
 import Image from "next/image";
+import InstructionsIMG from "../../../../../public/Questions-bro.png";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
+import NavbarCall from "./NavbarCall";
 
-const StreamInstruction = ({isLoaded}) => {
-    const mediaUrl = "rtmp://media.sharedview.live:1935/live/"
-    const signKey = `${document.location.pathname.substring(1)}?sign=${Cookies.get("room-exp")}-${Cookies.get("sign")}&expiration=${Cookies.get("room-exp")}`
+const StreamInstruction = ({ isLoaded }) => {
+    const mediaUrl = "rtmp://media.sharedview.live:1935/live/";
+    const signKey = `${document.location.pathname.substring(
+        1
+    )}?sign=${Cookies.get("room-exp")}-${Cookies.get(
+        "sign"
+    )}&expiration=${Cookies.get("room-exp")}`;
     const copy = async (txt) => {
-          try {
-                await navigator.clipboard.writeText(txt);
-                console.log('Page URL copied to clipboard');
-            } catch (err) {
-                console.error('Failed to copy: ', err);
-            }
-    }
+        try {
+            await navigator.clipboard.writeText(txt);
+            console.log("Page URL copied to clipboard");
+        } catch (err) {
+            console.error("Failed to copy: ", err);
+        }
+    };
 
-    const [visibilityClass, setVisibilityClass] = useState("w-4/5 overflow-hidden flex visible justify-center flex-col");
+    const [visibilityClass, setVisibilityClass] = useState(
+        "overflow-hidden flex visible justify-center flex-col items-center gap-2"
+    );
     useEffect(() => {
-        if(isLoaded){
-            setVisibilityClass("hidden")
+        if (isLoaded) {
+            setVisibilityClass("hidden");
         }
     }, [isLoaded]);
 
     return (
         <div className={visibilityClass}>
-        <ConfigProvider
-            theme={{
-                token: {
-                    colorPrimary: "#801cb7"
-                },
-                components: {
-                    Button: {
-                        colorPrimary: "#801cb7",
+            <ConfigProvider
+                theme={{
+                    components: {
+                        Button: {
+                            colorBgTextHover: "#fff",   
+                            colorPrimaryHover: "#fff",
+                            colorTextDisabled: "rgba(255, 255, 255, 0.5)",
+                            colorBgContainerDisabled: "rgba(127, 25, 180, 0.5))",
+                            colorPrimaryActive: "#fff",
+                        },
+                        Tag: {
+                            defaultBg: "#1e1e1e",
+                            defaultColor: "#fff",
+                            marginXS: "0.2rem",
+                        },
                     },
-                },
-            }}
-        >
-            <Image className={"w-2/6 "} src={ico}  alt={"sharedview img"} />
-            <h2 className={"w-fit"}>
-                {`Instructions`}
-            </h2>
-            <p className={"w-fit"} >
-                {`0. Get any broadcast app (like OBS, Streamlabs)`}
-            </p>
-            <p className={"w-fit"}>
-                {`1. Use custom RTMP for broadcasting`}
-            </p>
-            <p className={"w-fit"}>
-                {`2. In url place: `}
-            </p>
-            <p className={"w-fit"}>
-                <Tag color="purple">
-                    {`${mediaUrl}  `}
-                 </Tag>
-                <Button type="dashed" ghost onClick={()=>copy(mediaUrl)}>Copy</Button>
-            </p>
-            <p className={"w-fit"}>
-                {`3. In stream key use: `}
-            </p>
-            <p className={"w-fit"}>
-                <Tag color="purple">
-                    {`${signKey}  `}
-                </Tag>
-                <Button type="dashed" ghost onClick={()=>copy(signKey)}>Copy</Button>
-
-            </p>
-            <p className={"w-fit"}>
-                {`4. Happy live 🔴!`}
-            </p>
-            <p>
-                <br />
-                <Button ghost size={"large"} onClick={()=>document.location.reload()} >Reload</Button>
-            </p>
-
-        </ConfigProvider>
+                }}
+            >
+                <NavbarCall />
+                <Image
+                    width={150}
+                    height={150}
+                    src={InstructionsIMG}
+                    alt={"sharedview img"}
+                />
+                <div className="flex flex-row gap-2">
+                    <h2 className="text-lg font-bold text-white">
+                        Como transmitir en vivo
+                    </h2>
+                    <Tooltip
+                        placement="top"
+                        title="Puedes usar OBS, XSplit, Streamlabs OBS, o cualquier otro software de streaming"
+                    >
+                        <QuestionCircleOutlined
+                            style={{
+                                color: "white",
+                                fontSize: "1.2rem",
+                            }}
+                        />
+                    </Tooltip>
+                </div>
+                <p className="text-white text-center text-sm">
+                    1. En el software de streaming, selecciona la opción de RTMP como tipo
+                    de servidor y coloca la siguiente URL como servidor:
+                </p>
+                <p className="text-white text-center text-sm">
+                    2. En el lugar de la URL:
+                </p>
+                <p className="w-fit flex flex-row gap-2">
+                    <Tag>{`${mediaUrl}  `}</Tag>
+                    <button
+                        className="text-white text-sm font-bold"
+                        onClick={() => copy(mediaUrl)}
+                    >
+                        Copiar
+                    </button>
+                </p>
+                <p className="w-fit text-sm">
+                    3. En el steam usa la siguiente llave de transmisión:
+                </p>
+                <p className="w-fit flex flex-row gap-2">
+                    <Tag>{`${signKey}  `}</Tag>
+                    <button
+                        className="text-white text-sm font-bold"
+                        onClick={() => copy(signKey)}
+                    >
+                        Copiar
+                    </button>
+                </p>
+                <p className="w-fit text-sm">
+                    4. ¡Listo!, recarga la página para ver tu transmisión en vivo.
+                </p>
+                <p>
+                    <br />
+                    <Button onClick={() => window.location.reload()} className="bg-purple hover:bg-violet-900 text-white border-none phone:w-full">
+                        Recargar
+                    </Button>
+                </p>
+            </ConfigProvider>
         </div>
     );
 };

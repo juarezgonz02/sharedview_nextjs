@@ -4,33 +4,24 @@ import SocketContext from "./components/socketContext";
 import StreamPlayer from "./components/StreamPlayer/streamplayer";
 import CallInterface from "./components/CallInterface/callInterface";
 import VoiceController from "@/app/[rooms]/components/CallInterface/VoiceController";
-import ChatController from "@/app/[rooms]/components/ChatComponent/ChatController";
-import { useState } from "react";
 import "./main.css"
 
 export default function Page({ params }) {
-
-  const [showChatState, toogleShowing] = useState(false)
-
   return (
-  <SocketContext room={params.rooms} >
-    <div className="flex m-8 justify-around">
-
-      <div className="main-container">
-
-        <StreamPlayer />
-        <div id="remoteAudio-container" >
-          <div className="flex flex-auto w-auto items-end justify-around" >
+    <SocketContext room={params.rooms} >
+      <div className="flex flex-row items-center justify-center min-h-screen mx-8">
+        <div className="w-3/4 h-max flex flex-col items-start justify-center gap-8">
+          <StreamPlayer />
+          <div className="flex flex-row items-center justify-center gap-6">
             <VoiceController username={"Me"} key={"voice-controller-component"}></VoiceController>
-            <ChatController state={showChatState} changeState={toogleShowing}> </ChatController>
+            <CallInterface />
           </div>
-          <CallInterface />
         </div>
-
+        <div className="w-1/4 h-max flex items-center justify-center">
+          <Chat />
+        </div>
       </div>
-      <Chat showChat={showChatState} />
-    </div>
 
-  </SocketContext>
+    </SocketContext>
   )
 }

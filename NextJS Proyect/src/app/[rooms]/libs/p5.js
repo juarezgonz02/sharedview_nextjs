@@ -21,32 +21,23 @@ const P5Sketch = ({username, media}) => {
         }
 
         p5.setup = () => {
-            p5.createCanvas(120, 120);
+            p5.createCanvas(40, 40);
             audioCtx = new window.AudioContext()
-            width = 120;
-            height = 120;
-
-            // amplitude = new p5.Amplitude();
-            //textFont(fontRegular);
+            width = 40;
+            height = 40;
+        
             p5.frameRate(30)
-
+        
             const audioContext = new window.AudioContext();
-
-            // Create an AnalyserNode
+        
             analyser = audioContext.createAnalyser();
-
-            analyser.fftSize = 256; // You can adjust the FFT size as needed
-
-            // Connect the MediaStream to the AnalyserNode
+            analyser.fftSize = 256;
+        
             const source = audioContext.createMediaStreamSource(media);
             source.connect(analyser);
-
-            // Create an array to store amplitude data
+        
             bufferLength = analyser.frequencyBinCount;
-
             dataArray = new Uint8Array(bufferLength);
-
-
         }
 
         function getAmplitude() {
@@ -74,20 +65,20 @@ const P5Sketch = ({username, media}) => {
             //console.log(audioCtx.state)
             //let level = amplitude.getLevel();
             let level = getAmplitude()
-            let size = p5.map(level, 0, 30, 75, 90);
+            let size = p5.map(level, 0, 255, 0, 40)
 
             p5.ellipse(width / 2, height / 2, size, size)
 
             p5.strokeWeight(1)
             p5.stroke(255);
             p5.fill("#121212")
-            p5.ellipse(width / 2, height / 2, 75, 75)
+            p5.ellipse(width / 2, height / 2, 40, 40)
 
-            p5.textSize(48);
+            p5.textSize(40)
 
             p5.strokeWeight(0.01)
 
-            let iLetter = username[0]
+            let iLetter = username[0].toUpperCase()
 
             p5.fill(255, 255, 255);
             p5.text(iLetter, width / 2 - p5.textWidth(iLetter) / 2, height / 2 + 16);
