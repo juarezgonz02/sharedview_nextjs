@@ -86,13 +86,7 @@
 #localAudio{
     display: none;
 }
-#video{
-    display: none;
-}
-#video-stream{
-    height: 100%;
-    width: 100%;
-}
+
 .no-stream{
     display: flex;
     color: whitesmoke;

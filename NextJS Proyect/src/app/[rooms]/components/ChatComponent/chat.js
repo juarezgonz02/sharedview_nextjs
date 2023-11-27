@@ -5,9 +5,9 @@ import MessageComponent from "./message";
 import { socketContext } from "@/app/[rooms]/components/socketContext";
 import { Form, Input } from "antd";
 import { ConfigProvider } from "antd";
-import { SendOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 
-const Chat = ({ showChat }) => {
+const Chat = ({ toggleChat }) => {
     const formRef = React.useRef(null);
     const sendChatMessage = useContext(socketContext).sendChatMessage;
 
@@ -21,8 +21,9 @@ const Chat = ({ showChat }) => {
 
 
     return (
-        <div className="flex flex-col justify-between w-full px-4 rounded-md h-screen-90 py-8 bg-dark">
+        <div className="flex flex-col justify-between w-full px-4 rounded-md h-screen-90 py-8 bg-dark tablet:w-10/12">
             <div className="flex flex-col items-center justify-center gap-2">
+                <CloseOutlined className="hidden tablet:flex tablet:cursor-pointer tablet:ml-auto" onClick={toggleChat}/>
                 <span>Mensajes de la llamada</span>
                 <span className="text-center text-xs opacity-50">
                     Los mensajes se borran al finalizar la llamada

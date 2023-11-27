@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import flv from 'flv.js'
-import { env } from '../../../../../next.config';
 import { useParams, useSearchParams } from 'next/navigation';
 import StreamInstruction from './StreamInstruction';
 import Cookies from 'js-cookie'
+import NavbarCall from './NavbarCall';
 
-const StreamPlayer = () => {
+const StreamPlayer = ({toggleChat}) => {
 
     const [loaded, setLoaded] = useState(false)
 
@@ -55,11 +55,10 @@ const StreamPlayer = () => {
     }, [])
 
     return (
-        <div className="video-container">
-
-            <StreamInstruction isLoaded={loaded} />
-
-            <div hidden={!loaded} className="video-stream-cont">
+        <div className="flex flex-col items-start gap-4 justify-start w-full">
+            <NavbarCall toggleChat={toggleChat}/>
+            <StreamInstruction isLoaded={loaded}/>
+            <div hidden={!loaded} className="w-11/12 rounded-md">
                 <video autoPlay controls className={"stream-video"} ref={videoPlayerElement} ></video>
             </div>
 

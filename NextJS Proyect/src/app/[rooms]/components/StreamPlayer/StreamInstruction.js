@@ -52,7 +52,6 @@ const StreamInstruction = ({ isLoaded }) => {
                     },
                 }}
             >
-                <NavbarCall />
                 <Image
                     width={150}
                     height={150}
@@ -91,11 +90,11 @@ const StreamInstruction = ({ isLoaded }) => {
                         Copiar
                     </button>
                 </p>
-                <p className="w-fit text-sm">
+                <p className="w-fit text-sm text-center">
                     3. En el steam usa la siguiente llave de transmisión:
                 </p>
                 <p className="w-fit flex flex-row gap-2">
-                    <Tag>{`${signKey}  `}</Tag>
+                    <Tag>{`${signKey.length > 10 ? signKey.substring(0, 30) + "..." : signKey}`}</Tag>
                     <button
                         className="text-white text-sm font-bold"
                         onClick={() => copy(signKey)}
@@ -103,7 +102,7 @@ const StreamInstruction = ({ isLoaded }) => {
                         Copiar
                     </button>
                 </p>
-                <p className="w-fit text-sm">
+                <p className="w-fit text-sm text-center">
                     4. ¡Listo!, recarga la página para ver tu transmisión en vivo.
                 </p>
                 <p>
